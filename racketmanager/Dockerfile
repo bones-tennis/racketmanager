@@ -1,20 +1,28 @@
-# ---- Build Stage ----
-FROM maven:3.9.5-eclipse-temurin-17 AS build
+# ===== Build stage =====
+FROM maven:3.9.6-eclipse-temurin-17 AS builder
 
 WORKDIR /app
 
+# pom.xml を先にコピーして依存関係だけ先に解決
 COPY pom.xml .
-COPY src ./src
+RUN mvn -B dependency:go-offline
 
-RUN mvn clean package -DskipTests
+# プロジェクトの全ファイルをコピー
+COPY . .
 
-# ---- Run Stage ----
-FROM eclipse-temurin:17-jdk
+# jar をビルド
+RUN mvn -B clean package -DskipTests
+
+
+# ===== Run stage =====
+FROM eclipse-temurin:17-jre
 
 WORKDIR /app
 
-COPY --from=build /app/target/*.jar app.jar
+# builder ステージで作った jar をコピー
+COPY --from=builder /app/target/*.jar app.jar
+
+# 起動コマンド
+ENTRYPOINT ["java","-jar","/app/app.jar"]
 
 EXPOSE 8080
-
-ENTRYPOINT ["java", "-jar", "app.jar"]
