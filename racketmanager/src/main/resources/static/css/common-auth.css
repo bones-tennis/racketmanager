@@ -1,0 +1,211 @@
+@charset "UTF-8";
+
+/* ---------- カラーテーマ ---------- */
+:root {
+  --main-blue: #1e5bb8;      /* 参考画像に近い青 */
+  --dark-blue: #174a95;      /* ホバー用の濃い青 */
+  --light-blue: #f5f8fc;     /* 背景の淡い水色 */
+  --white: #ffffff;
+  --shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* ---------- 全体背景 ---------- */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+  background: linear-gradient(to bottom, var(--light-blue), #ffffff);
+  background-image: url("/images/tennis-racket.png");
+  background-repeat: no-repeat;
+  background-position: right 40px center;
+  background-size: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* ---------- 左上ロゴ（bones） ---------- */
+header {
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  
+}
+
+header .logo {
+  height: 60px;
+  width: auto;
+  object-fit: contain;
+}
+@media (max-width: 900px) {
+  header .logo {
+    height: 60px;
+  }
+
+  main {
+    margin-top: 110px;
+  }
+}
+
+@media (max-width: 600px) {
+  header .logo {
+    height: 45px;
+  }
+
+  main {
+    margin-top: 90px;
+  }
+}
+/* ---------- タイトル ---------- */
+h2 {
+  font-size: 26px;
+  color: #000;
+  margin-bottom: 20px;
+}
+
+/* ---------- フォーム ---------- */
+form {
+  background-color: var(--white);
+  padding: 50px 50px;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 320px;
+  max-width: 90%;
+}
+
+form label {
+  font-size: 14px;
+  color: #333;
+  display: block;
+  margin-bottom: 5px;
+}
+
+form input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+form input:hover,
+form input:focus {
+  border-color: var(--main-blue);
+  outline: none;
+  box-shadow: 0 0 4px var(--main-blue);
+}
+.google-login-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* アイコンと文字の間隔 */
+  width: 100%;
+  padding: 10px;
+  background-color: #ffffff;
+  color: #444;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.google-login-btn:hover {
+  background-color: #f8f8f8;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.google-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* ---------- ログインボタン ---------- */
+form button {
+  background-color: var(--main-blue);
+  color: var(--white);
+  border: none;
+  padding: 14px;
+  border-radius: 9999px; /* 丸みを強調 */
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s ease;
+}
+
+form button:hover {
+  background-color: var(--dark-blue);
+  transform: scale(1.02);
+}
+
+form button:active {
+  transform: scale(0.98);
+}
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+
+
+/* ---------- 新規アカウント作成ボタン ---------- */
+.link-btn {
+  display: inline-block;
+  background-color: var(--main-blue);
+  color: var(--white);
+  padding: 16px;
+  border-radius: 9999px;
+  font-size: 15px;
+  text-decoration: none;
+  text-align: center;
+  width: 350px;
+  max-width: 91%;
+  margin-top: 15px;
+  transition: background-color 0.3s, transform 0.2s ease;
+}
+
+.link-btn:hover {
+  background-color: var(--dark-blue);
+  transform: scale(1.02);
+}
+
+.link-btn:active {
+  transform: scale(0.98);
+}
+
+/* ---------- メッセージ ---------- */
+.error-msg {
+  margin-top: 15px;
+  color: red;
+  font-size: 14px;
+}
+
+.logout-msg {
+  margin-top: 15px;
+  color: var(--main-blue);
+  font-size: 14px;
+}
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.form-buttons .back-btn {
+  flex: 1;
+  text-align: center;
+  padding: 14px;
+  border-radius: 9999px;
+}
+

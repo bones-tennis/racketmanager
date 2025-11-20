@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>新規依頼登録</title>
+  <link rel="stylesheet" href="/css/order_form.css">
+</head>
+<body>
+  <h2>新規依頼登録</h2>
+  <header>
+    <img src="/css/images/bones.jpg" alt="bones ロゴ" class="logo">
+  </header>
+
+  <form th:action="@{/staff/orders}" method="post">
+    <label for="customerSearch">顧客名</label>
+    <div class="search-wrapper">
+      <input type="text" id="customerSearch" placeholder="顧客名を検索..." autocomplete="off">
+      <input type="hidden" name="customerId" id="selectedCustomerId">
+
+      <!-- ▼ サジェストリスト（Thymeleafで顧客名を展開） -->
+      <ul id="suggestList" class="suggest-list">
+        <li th:each="c : ${customers}"
+            th:data-id="${c.id}"
+            th:text="${c.displayName}">
+        </li>
+      </ul>
+    </div>
+
+    <label>ガット名</label>
+    <div class="input-wrapper">
+      <input type="text" name="stringType" placeholder="例: POLYTOUR PRO" required>
+    </div>
+
+    <label>ガット素材</label>
+    <div class="select-wrapper">
+      <select name="stringMaterial" required>
+        <option value="">選択してください</option>
+        <option value="ナイロン">ナイロン</option>
+        <option value="ポリエステル">ポリエステル</option>
+        <option value="ナチュラル">ナチュラル</option>
+      </select>
+    </div>
+
+    <label>テンション（メイン）</label>
+    <div class="input-wrapper">
+      <input type="text" name="tensionMain" placeholder="例: 45">
+    </div>
+
+    <label>テンション（クロス）</label>
+    <div class="input-wrapper">
+      <input type="text" name="tensionCross" placeholder="例: 45">
+    </div>
+
+    <label>張り上がり希望日</label>
+    <div class="input-wrapper">
+      <input type="date" name="dueDate" required>
+    </div>
+
+    <label>金額（円）</label>
+    <div class="input-wrapper">
+      <input type="number" name="price" step="1" min="0" placeholder="例: 5500">
+    </div>
+
+    <label>張り人（担当者）</label>
+    <div class="input-wrapper">
+      <input type="text" name="stringerName" placeholder="担当者名">
+    </div>
+
+    <div class="form-buttons">
+      <button type="submit">登録</button>
+      <a th:href="@{/staff/orders}" class="back-btn">戻る</a>
+    </div>
+  </form>
+
+  <!-- ✅ JavaScript -->
+  <script>
+    const searchInput = document.getElementById('customerSearch');
+    const suggestList = document.getElementById('suggestList');
+    const items = Array.from(suggestList.querySelectorAll('li'));
+    const hiddenCustomerId = document.getElementById('selectedCustomerId');
+    let currentIndex = -1;
+
+    // 🔸 フォーカスで候補リストを表示
+    searchInput.addEventListener('focus', () => {
+      suggestList.style.display = 'block';
+    });
+
+    // 🔸 入力でフィルタ
+    searchInput.addEventListener('input', () => {
+      const keyword = searchInput.value.toLowerCase();
+      let matchCount = 0;
+      items.forEach(li => {
+        const visible = li.textContent.toLowerCase().includes(keyword);
+        li.style.display = visible ? '' : 'none';
+        if (visible) matchCount++;
+      });
+      suggestList.style.display = matchCount > 0 ? 'block' : 'none';
+      currentIndex = -1;
+    });
+
+    // 🔸 クリックで選択
+    items.forEach(li => {
+      li.addEventListener('click', () => {
+        searchInput.value = li.textContent;
+        hiddenCustomerId.value = li.dataset.id;
+        suggestList.style.display = 'none';
+        document.querySelector('input[name="stringType"]').focus();
+      });
+    });
+
+    // 🔸 外をクリックしたら閉じる
+    document.addEventListener('click', (e) => {
+      if (!suggestList.contains(e.target) && e.target !== searchInput) {
+        suggestList.style.display = 'none';
+      }
+    });
+
+    // 🔸 キーボード操作対応
+    searchInput.addEventListener('keydown', (e) => {
+      const visibleItems = items.filter(li => li.style.display !== 'none');
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        currentIndex = Math.min(currentIndex + 1, visibleItems.length - 1);
+        if (currentIndex >= 0) highlight(visibleItems[currentIndex]);
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        currentIndex = Math.max(currentIndex - 1, 0);
+        if (currentIndex >= 0) highlight(visibleItems[currentIndex]);
+      } else if (e.key === 'Enter') {
+        e.preventDefault();
+        if (currentIndex >= 0) {
+          const li = visibleItems[currentIndex];
+          searchInput.value = li.textContent;
+          hiddenCustomerId.value = li.dataset.id;
+          suggestList.style.display = 'none';
+          document.querySelector('input[name="stringType"]').focus();
+        }
+      }
+    });
+
+    // 🔸 ハイライト処理
+    function highlight(target) {
+      items.forEach(li => li.style.background = '');
+      target.style.background = '#f5f8fc';
+    }
+  </script>
+</body>
+</html>

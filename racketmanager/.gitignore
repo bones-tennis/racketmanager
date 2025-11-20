@@ -1,0 +1,25 @@
+# Eclipse & Maven
+.classpath
+.project
+.settings/
+target/
+build/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# IDE files
+*.iml
+.idea/
+
+# SSL keys (絶対に公開しない)
+*.p12
+*.pem
+*.key
+
+# Environment files
+.env

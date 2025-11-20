@@ -1,0 +1,253 @@
+@charset "UTF-8";
+
+/* ---------- カラーテーマ ---------- */
+:root {
+  --main-blue: #1e5bb8;
+  --dark-blue: #174a95;
+  --light-blue: #f5f8fc;
+  --white: #ffffff;
+  --shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  --border: #ccc;
+  --placeholder: #aaa;
+}
+
+/* ---------- 全体 ---------- */
+body {
+  font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+  background: linear-gradient(to bottom, var(--light-blue), #ffffff);
+  background-repeat: no-repeat;
+  background: #ffffff;
+  background-position: right 40px center;
+  background-size: 40%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+h2 {
+  text-align: center;
+  font-size: 24px;
+  color: var(--main-blue);
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+/* ---------- 左上ロゴ（bones） ---------- */
+header {
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  
+}
+
+header .logo {
+  height: 60px;
+  width: auto;
+  object-fit: contain;
+}
+@media (max-width: 900px) {
+  header .logo {
+    height: 60px;
+  }
+
+  main {
+    margin-top: 110px;
+  }
+}
+
+@media (max-width: 600px) {
+  header .logo {
+    height: 45px;
+  }
+
+  main {
+    margin-top: 90px;
+  }
+}
+
+/* ---------- フォーム ---------- */
+form {
+  max-width: 650px;
+  margin: 0 auto;
+  background-color: var(--white);
+  padding: 25px;
+  box-shadow: var(--shadow);
+  border-radius: 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 20px;
+}
+
+@media (max-width: 600px) {
+  form {
+    grid-template-columns: 1fr;
+  }
+}
+
+form label {
+  font-weight: 600;
+  margin-bottom: 4px;
+  display: block;
+  color: #333;
+  font-size: 14px;
+}
+/* ---------- 顧客名のドロップダウン ---------- */
+.search-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+#customerSearch {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+.suggest-list {
+  display: none;
+  position: absolute;
+  top: 40px;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  max-height: 180px;
+  overflow-y: auto;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  z-index: 1000;
+}
+
+.suggest-list li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.suggest-list li:hover {
+  background-color: #f5f8fc;
+}
+
+
+/* ---------- input wrapper（浮き上がる） ---------- */
+.input-wrapper {
+  display: block;
+  transition: transform 0.25s ease;
+}
+
+.input-wrapper:focus-within {
+  transform: scale(1.01);
+}
+
+/* ---------- select wrapper（浮き上がらない） ---------- */
+.select-wrapper {
+  display: block;
+  transition: none;
+}
+
+.select-wrapper:focus-within {
+  transform: none;
+}
+
+/* ---------- 入力欄 / セレクト ---------- */
+form input[type="text"],
+form input[type="number"],
+form input[type="date"],
+form select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: #f9fafc;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+}
+
+form input::placeholder {
+  color: var(--placeholder);
+}
+
+/* ---------- input のフォーカス時 ---------- */
+form input[type="text"]:focus,
+form input[type="number"]:focus,
+form input[type="date"]:focus {
+  outline: none;
+  border-color: var(--main-blue);
+  background-color: var(--white);
+  box-shadow: 0 0 0 3px rgba(30, 91, 184, 0.2);
+  transform: scale(1.01);
+}
+
+/* ---------- select のフォーカス時（ぶるぶる対策） ---------- */
+form select:focus {
+  outline: none;
+  border-color: var(--main-blue);
+  background-color: var(--white);
+  box-shadow: 0 0 0 3px rgba(30, 91, 184, 0.2);
+  transform: none;
+}
+
+/* ---------- ボタン ---------- */
+.form-buttons {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+button[type="submit"],
+.back-btn {
+  background: linear-gradient(to bottom right, var(--main-blue), var(--dark-blue));
+  color: var(--white);
+  border: none;
+  padding: 11px 20px;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+button[type="submit"]:hover,
+.back-btn:hover {
+  box-shadow: 0 6px 14px rgba(30, 91, 184, 0.3);
+  transform: translateY(-2px);
+}
+
+/* ---------- スマホ対応 ---------- */
+@media (max-width: 600px) {
+  h2 {
+    font-size: 20px;
+    margin-top: 20px;
+  }
+
+  form {
+    padding: 15px;
+  }
+
+  form label {
+    font-size: 13px;
+  }
+
+  form input,
+  form select {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  button[type="submit"],
+  .back-btn {
+    font-size: 14px;
+    padding: 9px 16px;
+  }
+}

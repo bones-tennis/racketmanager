@@ -1,0 +1,155 @@
+@charset "UTF-8";
+
+/* ---------- カラーテーマ ---------- */
+:root {
+  --main-blue: #1e5bb8;
+  --dark-blue: #174a95;
+  --light-blue: #f5f8fc;
+  --white: #ffffff;
+  --shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* ---------- 全体背景 ---------- */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+  background: linear-gradient(to bottom, var(--light-blue), #ffffff);
+  background-image: url("/images/tennis-racket.png");
+  background-repeat: no-repeat;
+  background-position: right 40px center;
+  background-size: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* ---------- 左上ロゴ ---------- */
+header {
+  position: absolute;
+  top: 10px;
+  left: 20px;
+}
+
+header .logo {
+  height: 60px;
+  width: auto;
+  object-fit: contain;
+}
+
+@media (max-width: 900px) {
+  header .logo {
+    height: 60px;
+  }
+
+  main {
+    margin-top: 110px;
+  }
+}
+
+@media (max-width: 600px) {
+  header .logo {
+    height: 45px;
+  }
+
+  main {
+    margin-top: 90px;
+  }
+}
+
+/* ---------- タイトル ---------- */
+h2 {
+  font-size: 26px;
+  color: #000;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* ---------- フォーム ---------- */
+form {
+  background-color: var(--white);
+  padding: 50px;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 320px;
+  max-width: 90%;
+}
+
+form label {
+  font-size: 14px;
+  color: #333;
+  display: block;
+  margin-bottom: 5px;
+}
+
+form input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+form input:hover,
+form input:focus {
+  border-color: var(--main-blue);
+  outline: none;
+  box-shadow: 0 0 4px var(--main-blue);
+}
+
+/* ---------- ボタン ---------- */
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.action-btn {
+  flex: 1;
+  text-align: center;
+  background-color: var(--main-blue);
+  color: var(--white);
+  padding: 14px;
+  border-radius: 9999px;
+  font-size: 15px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s ease;
+}
+
+.action-btn:hover {
+  background-color: var(--dark-blue);
+  transform: scale(1.02);
+}
+
+.action-btn:active {
+  transform: scale(0.98);
+}
+
+.back-btn {
+  background-color: var(--main-blue);
+}
+
+/* ---------- メッセージ ---------- */
+.success-msg {
+  margin-top: 15px;
+  color: green;
+  font-size: 14px;
+  text-align: center;
+}
+
+.error-msg {
+  margin-top: 15px;
+  color: red;
+  font-size: 14px;
+  text-align: center;
+}

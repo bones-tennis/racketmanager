@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>会員登録</title>
+    <link rel="stylesheet" href="/css/common-auth.css">
+</head>
+<body>
+    <header>
+        <img src="/css/images/bones.jpg" alt="bones ロゴ" class="logo">
+    </header>
+
+    <h2>会員登録</h2>
+
+    <form th:action="@{/signup}" method="post" th:object="${user}">
+        <div>
+            <label>ユーザー名</label>
+            <input type="text" th:field="*{username}" autocomplete="off" required>
+        </div>
+
+        <div>
+            <label>パスワード</label>
+            <input type="password" th:field="*{password}" autocomplete="new-password" required>
+        </div>
+
+        <div>
+            <label for="email">メールアドレス</label>
+            <input type="email" th:field="*{email}" placeholder="example@mail.com" required>
+        </div>
+
+        <button type="submit">登録</button>
+        <a th:href="@{/login}" class="link-btn">ログインページへ</a>
+    </form>
+</body>
+</html>

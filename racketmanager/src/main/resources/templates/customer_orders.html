@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>依頼一覧</title>
+  <link rel="stylesheet" th:href="@{/css/customer_orders.css}">
+</head>
+<body>
+  <!-- 上部ボタン部分 -->
+  <div class="top-buttons">
+    <img src="/css/images/bones.jpg" alt="bones ロゴ" class="logo">
+
+    <!-- ログアウトボタンのみ残す -->
+    <form th:action="@{/logout}" method="post" class="header-buttons">
+      <button type="submit" class="logout-btn">ログアウト</button>
+    </form>
+  </div>
+
+  <h2>依頼一覧</h2>
+
+  <div class="table-wrapper">
+    <table border="1">
+      <tr>
+        <th class="id-column">ID</th>
+        <th>ガット</th>
+        <th>素材</th>
+        <th>テンション</th>
+        <th>受け取り予定日</th>
+        <th>ステータス</th>
+        <th>張り人</th>
+        <th>金額（円）</th>
+      </tr>
+
+      <tr th:each="o : ${orders}" th:attr="data-status=${o.status}">
+        <td class="id-column" th:text="${o.id}"></td>
+        <td th:text="${o.stringType}"></td>
+        <td th:text="${o.stringMaterial}"></td>
+        <td th:text="${o.tensionMain} + '/' + ${o.tensionCross}"></td>
+        <td th:text="${o.dueDate}"></td>
+        <td>
+          <div class="status-wrapper">
+            <span class="status-dot"></span>
+            <span th:text="
+                ${o.status == '未着手' ? '準備中' :
+                  (o.status == '張り中' ? '作業中' :
+                    (o.status == '完了' ? '完了' : o.status))}">
+            </span>
+          </div>
+        </td>
+        <td th:text="${o.stringerName != null ? o.stringerName : '未設定'}"></td>
+        <td th:text="${o.price != null ? o.price + '円' : '未設定'}"></td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

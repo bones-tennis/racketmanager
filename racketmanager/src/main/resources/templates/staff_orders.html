@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/css/staff_orders.css">
+  <title>依頼一覧（スタッフ）</title>
+</head>
+<body>
+  <h2>依頼一覧（スタッフ）</h2>
+  <header>
+  	  <img src="/css/images/bones.jpg" alt="bones ロゴ" class="logo">
+  	</header>
+  <!-- 上部ボタン -->
+  <div class="top-buttons">
+    <a th:href="@{/staff/orders/new}">新規依頼登録</a>
+	<a th:href="@{/staff/customers}" class="customer-btn">顧客一覧</a>
+	<form th:action="@{/logout}" method="post" style="display:inline;">
+      <button type="submit" class="logout-btn">ログアウト</button>
+    </form>
+  </div>
+
+  <!-- フィルタフォーム -->
+  <form th:action="@{/staff/orders}" method="get">
+    <div class="form-group">
+      <label>顧客名</label>
+      <input type="text" name="customerName" th:value="${param.customerName}">
+    </div>
+    <div class="form-group">
+      <label>ガット名</label>
+      <input type="text" name="stringType" th:value="${param.stringType}">
+    </div>
+    <div class="form-group">
+      <label>素材</label>
+      <select name="stringMaterial">
+        <option value="" th:selected="${param.stringMaterial == null or param.stringMaterial == ''}">すべて</option>
+        <option value="ナイロン" th:selected="${param.stringMaterial == 'ナイロン'}">ナイロン</option>
+        <option value="ポリエステル" th:selected="${param.stringMaterial == 'ポリエステル'}">ポリエステル</option>
+        <option value="ナチュラル" th:selected="${param.stringMaterial == 'ナチュラル'}">ナチュラル</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>張り人</label>
+      <input type="text" name="stringerName" th:value="${param.stringerName}">
+    </div>
+    <div class="form-group">
+      <label>納期</label>
+      <input type="date" name="startDate" th:value="${param.startDate}"> ~
+      <input type="date" name="endDate" th:value="${param.endDate}">
+    </div>
+    <div class="form-group">
+      <label>ステータス</label>
+      <select name="status">
+        <option value="" th:selected="${param.status == null or param.status == ''}">すべて</option>
+        <option value="未着手" th:selected="${param.status == '未着手'}">未着手</option>
+        <option value="張り中" th:selected="${param.status == '張り中'}">張り中</option>
+        <option value="完了" th:selected="${param.status == '完了'}">完了</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>並び順</label>
+      <select name="sort">
+        <option value="" th:selected="${param.sort == null or param.sort == ''}">指定なし</option>
+        <option value="dueDateAsc" th:selected="${param.sort == 'dueDateAsc'}">納期（新→昔）</option>
+        <option value="dueDateDesc" th:selected="${param.sort == 'dueDateDesc'}">納期（昔→新）</option>
+      </select>
+    </div>
+    <button type="submit">検索</button>
+  </form>
+
+  <div class="table-wrapper">
+    <table border="1" style="border-collapse:collapse; text-align:center;">
+      <tr>
+        <th class="id-column">ID</th>
+        <th>顧客</th>
+        <th>ガット名</th>
+        <th>素材</th>
+        <th>テンション</th>
+        <th>
+          納期
+          <a class="sort-arrow"
+            th:href="@{/staff/orders(
+              customerName=${param.customerName},
+              stringType=${param.stringType},
+              stringMaterial=${param.stringMaterial},
+              stringerName=${param.stringerName},
+              status=${param.status},
+              startDate=${param.startDate},
+              endDate=${param.endDate},
+              sort='dueDateAsc'
+            )}">▲</a>
+          <a class="sort-arrow"
+            th:href="@{/staff/orders(
+              customerName=${param.customerName},
+              stringType=${param.stringType},
+              stringMaterial=${param.stringMaterial},
+              stringerName=${param.stringerName},
+              status=${param.status},
+              startDate=${param.startDate},
+              endDate=${param.endDate},
+              sort='dueDateDesc'
+            )}">▼</a>
+          <span class="arrow-current" th:if="${sort}=='dueDateAsc'">（昇順）</span>
+          <span class="arrow-current" th:if="${sort}=='dueDateDesc'">（降順）</span>
+        </th>
+        <th>金額</th>
+        <th>張り人</th>
+        <th>ステータス</th>
+        <th>操作</th>
+      </tr>
+
+      <tr th:each="o : ${orders}" th:attr="data-status=${o.status}">
+        <td class="id-column" th:text="${o.id}"></td>
+		<td th:text="${o.customer != null ? o.customer.displayName : o.customerName}"></td>
+        <td th:text="${o.stringType}"></td>
+        <td th:text="${o.stringMaterial}"></td>
+        <td th:text="${(o.tensionMain?:'-') + '/' + (o.tensionCross?:'-')}"></td>
+        <td th:text="${o.dueDate}"></td>
+        <td th:text="${o.price != null ? o.price + '円' : '-'}"></td>
+        <td th:text="${o.stringerName != null ? o.stringerName : '-'}"></td>
+
+        <td class="status-cell" th:attr="data-status=${o.status}">
+          <form th:action="@{/staff/orders/{id}/status(id=${o.id})}" method="post" style="display:inline;">
+            <div class="status-wrapper">
+              <span class="status-dot"></span>
+              <select name="status" onchange="this.form.submit()">
+                <option value="未着手" th:selected="${o.status == '未着手'}">未着手</option>
+                <option value="張り中" th:selected="${o.status == '張り中'}">張り中</option>
+                <option value="完了" th:selected="${o.status == '完了'}">完了</option>
+              </select>
+            </div>
+          </form>
+        </td>
+
+        <td>
+          <a th:href="@{/staff/orders/{id}/edit(id=${o.id})}">編集</a>
+          <form th:action="@{|/staff/orders/${o.id}/delete|}" method="post" style="display:inline" onsubmit="return confirm('削除しますか？')">
+            <button type="submit" style="color:red;">削除</button>
+          </form>
+        </td>
+      </tr>
+    </table>
+  </div>
+</body>
+</html>

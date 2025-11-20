@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>顧客情報編集</title>
+  <link rel="stylesheet" href="/css/staff_customers.css">
+</head>
+<body>
+<header>
+  <img src="/css/images/bones.jpg" alt="bones ロゴ" class="logo">
+</header>
+
+<h2>顧客情報の編集</h2>
+
+<form th:action="@{|/staff/customers/${customer.id}/update|}" method="post" class="edit-form">
+  <div>
+    <label>表示名</label>
+    <input type="text" name="displayName" th:value="${customer.displayName}" required>
+  </div>
+  <div>
+    <label>ユーザー名</label>
+    <input type="text" name="username" th:value="${customer.usernameDecrypted}" required>
+  </div>
+  <div>
+    <label>メールアドレス</label>
+    <input type="email" name="email" th:value="${customer.emailDecrypted}" 
+           th:readonly="${customer.provider == 'google'}">
+  </div>
+  <div>
+    <label>パスワード（変更する場合のみ）</label>
+    <input type="password" name="password" placeholder="新パスワード">
+  </div>
+
+  <div class="form-buttons">
+    <button type="submit" class="save-btn">更新</button>
+    <a th:href="@{/staff/customers}" class="back-btn">戻る</a>
+  </div>
+</form>
+
+</body>
+</html>

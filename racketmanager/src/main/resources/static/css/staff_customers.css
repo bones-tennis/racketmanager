@@ -1,0 +1,296 @@
+@charset "UTF-8";
+
+/* ---------- カラーテーマ ---------- */
+:root {
+  --main-blue: #1e5bb8;
+  --dark-blue: #174a95;
+  --light-blue: #f5f8fc;
+  --white: #ffffff;
+  --shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  --status-not: rgb(255, 77, 77);
+  --status-progress: rgb(254, 219, 22);
+  --status-done: rgb(44, 224, 89);
+}
+
+/* ---------- 全体背景 ---------- */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+  background: linear-gradient(to bottom, var(--light-blue), #ffffff);
+  background-image: url("/css/images/tennis-racket.png");
+  background-repeat: no-repeat;
+  background-position: right 40px center;
+  background-size: 40%;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* ---------- ロゴ ---------- */
+header {
+  position: absolute;
+  top: -20px;
+  left: 20px;
+}
+header .logo {
+  height: 45px;
+  width: auto;
+  object-fit: contain;
+}
+@media (max-width: 900px) {
+  header .logo { height: 50px; }
+}
+@media (max-width: 600px) {
+  header .logo { height: 35px; }
+}
+
+/* ---------- タイトル ---------- */
+h2 {
+  text-align: center;
+  font-size: 26px;
+  color: var(--main-blue);
+  margin-top: 40px;
+  margin-bottom: 30px;
+}
+
+/* ---------- テーブル ---------- */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  width: 95%;
+  min-width: 800px;
+  margin: 0 auto 50px;
+  border-collapse: collapse;
+  background-color: var(--white);
+  box-shadow: var(--shadow);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+th, td {
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+}
+
+th {
+  background-color: var(--main-blue);
+  color: var(--white);
+  font-weight: 600;
+}
+
+tr:hover {
+  background-color: #f0f6ff;
+}
+
+@media (max-width: 480px) {
+  .id-column { display: none; }
+}
+/* ---------- 検索フォーム ---------- */
+.search-form {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 0 auto 20px;
+  max-width: 400px;
+}
+
+.search-form input[type="text"] {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.search-form button {
+  background-color: var(--main-blue);
+  color: var(--white);
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.search-form button:hover {
+  background-color: var(--dark-blue);
+}
+
+@media (max-width: 600px) {
+  .search-form {
+    flex-direction: column;
+    max-width: 90%;
+  }
+
+  .search-form input[type="text"],
+  .search-form button {
+    width: 100%;
+  }
+}
+
+/* ---------- 編集・削除ボタン ---------- */
+.edit-btn,
+.delete-btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #fff;
+  text-decoration: none;
+  transition: background-color 0.2s;
+  cursor: pointer;
+}
+
+.edit-btn {
+  background-color: var(--main-blue);
+  margin-right: 5px;
+}
+.edit-btn:hover {
+  background-color: var(--dark-blue);
+}
+
+.delete-btn {
+  background-color: #d9534f;
+  border: none;
+}
+.delete-btn:hover {
+  background-color: #c9302c;
+}
+
+/* ---------- フォーム ---------- */
+.edit-form {
+  background-color: var(--white);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  max-width: 400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.edit-form label {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.edit-form input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+  width: 100%;
+}
+
+.edit-form input:focus {
+  outline: none;
+  border-color: var(--main-blue);
+  box-shadow: 0 0 4px var(--main-blue);
+}
+
+/* ---------- ボタン ---------- */
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.save-btn {
+  background-color: var(--main-blue);
+  color: var(--white);
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  flex: 1;
+  text-align: center;
+}
+
+.save-btn:hover {
+  background-color: var(--dark-blue);
+}
+
+.back-btn {
+  background-color: #ccc;
+  color: #000;
+  padding: 10px 15px;
+  text-decoration: none;
+  border-radius: 8px;
+  text-align: center;
+  flex: 1;
+}
+
+.back-btn:hover {
+  background-color: #bbb;
+}
+.top-buttons a,
+.top-buttons button {
+  display: inline-block;
+  background-color: #1e5bb8;
+  color: white;
+  padding: 8px 16px;
+  margin-right: 10px;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.top-buttons a:hover,
+.top-buttons button:hover {
+  background-color: #174a95;
+}
+
+.logout-btn {
+  background-color: #d9534f;
+}
+
+.logout-btn:hover {
+  background-color: #c9302c;
+}
+
+.back-btn {
+  background-color: #6c757d; /* グレー系で戻る感を出す */
+}
+
+.back-btn:hover {
+  background-color: #5a6268;
+}
+
+/* ---------- スマホ対応 ---------- */
+@media (max-width: 600px) {
+  h2 {
+    font-size: 20px;
+    margin-top: 20px;
+  }
+
+  table {
+    font-size: 13px;
+    min-width: 600px;
+  }
+
+  th, td {
+    padding: 8px;
+  }
+
+  .edit-form {
+    padding: 20px;
+    width: 90%;
+  }
+
+  .form-buttons {
+    flex-direction: column;
+  }
+
+  .save-btn, .back-btn {
+    width: 100%;
+  }
+}
