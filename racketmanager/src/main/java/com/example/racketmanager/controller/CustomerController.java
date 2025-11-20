@@ -78,11 +78,9 @@ public class CustomerController {
         return userRepo.findByUsername(encryptedUsername)
             .map(user -> {
                 System.out.println("更新前 username: " + user.getUsername());
-                System.out.println("更新前 email: " + user.getEmail());
 
                 // 🔐 更新時もencryptして保存
                 user.setUsername(EncryptionUtil.encrypt(username));
-                user.setEmail(EncryptionUtil.encrypt(email));
                 userRepo.save(user);
 
                 System.out.println("更新後 username: " + username);

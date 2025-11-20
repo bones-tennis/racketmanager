@@ -21,28 +21,18 @@ public class UserService {
     /**
      * ユーザー登録処理
      */
-    public void registerUser(String username, String password, String role, String email) {
-        // 🔐 AES暗号化
-        String encryptedUsername = EncryptionUtil.encrypt(username);
-        String encryptedEmail = EncryptionUtil.encrypt(email);
+    public void registerUser(String username, String password, String role) {
 
-        // 🔑 パスワードはハッシュ化
+        String encryptedUsername = EncryptionUtil.encrypt(username);
         String encodedPassword = passwordEncoder.encode(password);
 
-        // 🪪 表示用
-        String displayName = username;
-
-        User user = new User(
-                encryptedUsername,
-                encodedPassword,
-                "ROLE_" + role,
-                encryptedEmail,
-                displayName
-        );
-
+        User user = new User();
+        user.setUsername(encryptedUsername);
+        user.setPassword(encodedPassword);
+        user.setRole("ROLE_" + role);
+        user.setDisplayName(username);
         user.setProvider("local");
-        userRepo.save(user);
 
-        System.out.println("✅ 新規ユーザー登録: " + displayName + "（" + role + "）");
+        userRepo.save(user);
     }
 }

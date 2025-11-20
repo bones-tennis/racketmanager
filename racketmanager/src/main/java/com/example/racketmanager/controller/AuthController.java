@@ -37,8 +37,7 @@ public class AuthController {
             userService.registerUser(
                 user.getUsername(),
                 user.getPassword(),
-                "CUSTOMER",
-                user.getEmail()
+                "CUSTOMER"
             );
 
             model.addAttribute("success", "アカウントを登録しました！");

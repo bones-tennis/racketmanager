@@ -29,9 +29,6 @@ public class User {
     @Column(nullable = false)
     private String role;
 
-    // 🔐 暗号化してDB保存（email）
-    @Column(nullable = false)
-    private String email;
 
     // 🪪 表示用の名前（平文）
     @Column(nullable = false)
@@ -50,7 +47,6 @@ public class User {
         this.username = username;
         this.password = password;
         this.role = role;
-        this.email = email;
         this.displayName = displayName;
         this.provider = "local"; // デフォルト
     }
@@ -69,9 +65,6 @@ public class User {
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
-
     public String getDisplayName() { return displayName; }
     public void setDisplayName(String displayName) { this.displayName = displayName; }
 
@@ -85,15 +78,6 @@ public class User {
     public String getUsernameDecrypted() {
         try {
             return EncryptionUtil.decrypt(this.username);
-        } catch (Exception e) {
-            return "(復号エラー)";
-        }
-    }
-
-    @Transient
-    public String getEmailDecrypted() {
-        try {
-            return EncryptionUtil.decrypt(this.email);
         } catch (Exception e) {
             return "(復号エラー)";
         }

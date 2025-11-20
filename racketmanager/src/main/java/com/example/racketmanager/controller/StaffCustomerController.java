@@ -73,9 +73,6 @@ public class StaffCustomerController {
             user.setDisplayName(displayName);
             user.setUsername(EncryptionUtil.encrypt(username));
 
-            if (!"google".equals(user.getProvider())) {
-                user.setEmail(EncryptionUtil.encrypt(email));
-            }
 
             if (password != null && !password.isBlank()) {
                 user.setPassword(passwordEncoder.encode(password));
