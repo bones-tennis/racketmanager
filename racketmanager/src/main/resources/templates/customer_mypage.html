@@ -14,13 +14,11 @@
 
 <form th:action="@{/customer/mypage/update}" method="post">
     <div>
+    >
         <label>ユーザー名</label>
         <input type="text" name="username" th:value="${user.displayName}" required>
     </div>
-    <div>
-        <label>メールアドレス</label>
-        <input type="email" name="email" th:value="${user.email}" required>
-    </div>
+    
 
     <div class="form-buttons">
         <button type="submit" class="action-btn">更新</button>

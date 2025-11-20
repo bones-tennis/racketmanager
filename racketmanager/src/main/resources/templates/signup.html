@@ -23,11 +23,6 @@
             <input type="password" th:field="*{password}" autocomplete="new-password" required>
         </div>
 
-        <div>
-            <label for="email">メールアドレス</label>
-            <input type="email" th:field="*{email}" placeholder="example@mail.com" required>
-        </div>
-
         <button type="submit">登録</button>
         <a th:href="@{/login}" class="link-btn">ログインページへ</a>
     </form>
