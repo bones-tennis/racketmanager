@@ -22,11 +22,6 @@
     <input type="text" name="username" th:value="${customer.usernameDecrypted}" required>
   </div>
   <div>
-    <label>メールアドレス</label>
-    <input type="email" name="email" th:value="${customer.emailDecrypted}" 
-           th:readonly="${customer.provider == 'google'}">
-  </div>
-  <div>
     <label>パスワード（変更する場合のみ）</label>
     <input type="password" name="password" placeholder="新パスワード">
   </div>
