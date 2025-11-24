@@ -66,7 +66,6 @@ public class StaffCustomerController {
             @PathVariable Long id,
             @RequestParam String displayName,
             @RequestParam String username,
-            @RequestParam String email,
             @RequestParam(required = false) String password) {
 
         userRepo.findById(id).ifPresent(user -> {
