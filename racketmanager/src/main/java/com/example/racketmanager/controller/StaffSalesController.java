@@ -1,7 +1,7 @@
 package com.example.racketmanager.controller;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.time.YearMonth;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -27,69 +27,53 @@ public class StaffSalesController {
             @RequestParam(required = false) Integer month,
             Model model) {
 
+        // ▼ 初回表示：今年の今月に自動設定
         LocalDate now = LocalDate.now();
         if (year == null) year = now.getYear();
         if (month == null) month = now.getMonthValue();
 
-        // ==== ① 当月の締め期間 ====
-        LocalDate start = LocalDate.of(year, month, 1).minusMonths(1).withDayOfMonth(11);
+        // ▼ 〆日ロジック（月10日締め）
+        // 例：11月分 → 10月11日〜11月10日
+        YearMonth ym = YearMonth.of(year, month);
         LocalDate end = LocalDate.of(year, month, 10);
+        LocalDate start = end.minusMonths(1).plusDays(1);
 
-        List<RacketOrder> monthOrders = orderRepo.findByDueDateBetween(start, end);
+        // DB取得
+        List<RacketOrder> orders = orderRepo.findByDueDateBetween(start, end);
 
+        // ▼ 本数カウント
         int poly = 0, nylon = 0, natural = 0;
 
-        for (RacketOrder o : monthOrders) {
+        for (RacketOrder o : orders) {
             if (o.getStringMaterial() == null) continue;
+
             switch (o.getStringMaterial()) {
-                case "ポリエステル" -> poly++;
-                case "ナイロン" -> nylon++;
-                case "ナチュラル" -> natural++;
+                case "ポリエステル": poly++; break;
+                case "ナイロン": nylon++; break;
+                case "ナチュラル": natural++; break;
             }
         }
 
-        int monthTotal = poly * 800 + nylon * 800 + natural * 1000;
+        // ▼ 売上計算
+        int polyPrice = poly * 800;
+        int nylonPrice = nylon * 800;
+        int naturalPrice = natural * 1000;
+        int salesTotal = polyPrice + nylonPrice + naturalPrice;
 
-        // ==== ② 年間の1〜12月集計 ====
-        List<Integer> polyList = new ArrayList<>();
-        List<Integer> nylonList = new ArrayList<>();
-        List<Integer> naturalList = new ArrayList<>();
+        // ▼ HTML へ値を渡す
+        model.addAttribute("year", year);
+        model.addAttribute("month", month);
+        model.addAttribute("start", start.toString());
+        model.addAttribute("end", end.toString());
 
-        for (int m = 1; m <= 12; m++) {
-            LocalDate ms = LocalDate.of(year, m, 1).minusMonths(1).withDayOfMonth(11);
-            LocalDate me = LocalDate.of(year, m, 10);
-
-            List<RacketOrder> mo = orderRepo.findByDueDateBetween(ms, me);
-
-            int p = 0, n = 0, na = 0;
-            for (RacketOrder o : mo) {
-                if (o.getStringMaterial() == null) continue;
-                switch (o.getStringMaterial()) {
-                    case "ポリエステル" -> p++;
-                    case "ナイロン" -> n++;
-                    case "ナチュラル" -> na++;
-                }
-            }
-
-            polyList.add(p);
-            nylonList.add(n);
-            naturalList.add(na);
-        }
-
-        // ==== Modelへ ====
         model.addAttribute("poly", poly);
         model.addAttribute("nylon", nylon);
         model.addAttribute("natural", natural);
-        model.addAttribute("salesTotal", monthTotal);
 
-        model.addAttribute("polyList", polyList);
-        model.addAttribute("nylonList", nylonList);
-        model.addAttribute("naturalList", naturalList);
-
-        model.addAttribute("year", year);
-        model.addAttribute("month", month);
-        model.addAttribute("start", start);
-        model.addAttribute("end", end);
+        model.addAttribute("polyPrice", polyPrice);
+        model.addAttribute("nylonPrice", nylonPrice);
+        model.addAttribute("naturalPrice", naturalPrice);
+        model.addAttribute("salesTotal", salesTotal);
 
         return "staff_sales";
     }

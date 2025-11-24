@@ -2,7 +2,7 @@
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>張り人実績</title>
+    <title>張り人別 集計</title>
     <link rel="stylesheet" href="/css/staff_stringer_stats.css">
 </head>
 <body>
@@ -11,36 +11,43 @@
     <img src="/css/images/bones.jpg" class="logo">
 </header>
 
-<h2>張り人 実績</h2>
+<h2>張り人別 集計</h2>
 
-<div class="back">
-    <a href="/staff/orders" class="back-btn">← 依頼一覧へ戻る</a>
+<div class="top-buttons">
+    <a th:href="@{/staff/orders}" class="back-btn">← 依頼一覧へ戻る</a>
 </div>
 
-<!-- 期間 -->
+<!-- 期間表示 -->
 <div class="period">
     <p>対象期間：<span th:text="${start}"></span> 〜 <span th:text="${end}"></span></p>
 </div>
 
-<!-- 年月選択 -->
+<!-- 年月選択フォーム -->
 <form method="get" action="/staff/stringer-stats" class="select-form">
     <select name="year" th:value="${year}">
-        <option th:each="y : ${#numbers.sequence(2024,2030)}"
-                th:value="${y}" th:text="${y}">
+        <option th:each="y : ${#numbers.sequence(2024,2035)}"
+                th:value="${y}"
+                th:text="${y}">
         </option>
-    </select> 年
+    </select>
+    年
 
     <select name="month" th:value="${month}">
         <option th:each="m : ${#numbers.sequence(1,12)}"
-                th:value="${m}" th:text="${m}">
+                th:value="${m}"
+                th:text="${m}">
         </option>
-    </select> 月
+    </select>
+    月
 
     <button type="submit">表示</button>
 </form>
 
+<!-- ==========================
+     張り人別 テーブル
+     ========================== -->
 <div class="table-wrapper">
-<table class="stats-table">
+<table class="stats-table" border="1">
     <tr>
         <th>張り人</th>
         <th>ポリエステル</th>
@@ -54,9 +61,9 @@
         <td th:text="${s.poly}"></td>
         <td th:text="${s.nylon}"></td>
         <td th:text="${s.natural}"></td>
-        <td th:text="${s.total} + ' 円'"></td>
+        <td th:text="${s.total}"></td>
 
-        <!-- hidden でJSへ渡す -->
+        <!-- JS 用 hidden -->
         <input type="hidden" class="stringer-name" th:value="${s.name}">
         <input type="hidden" class="poly-val" th:value="${s.poly}">
         <input type="hidden" class="nylon-val" th:value="${s.nylon}">
@@ -65,30 +72,30 @@
 </table>
 </div>
 
-<!-- グラフ -->
+<!-- ==========================
+     グラフ
+     ========================== -->
 <div class="chart-wrapper">
-    <h3>張り人ごとの張った本数</h3>
+    <h3>張り人別 本数グラフ</h3>
     <canvas id="stringerChart"></canvas>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-// hidden から取得
-const names   = [...document.querySelectorAll(".stringer-name")].map(e => e.value);
-const poly    = [...document.querySelectorAll(".poly-val")].map(e => Number(e.value));
-const nylon   = [...document.querySelectorAll(".nylon-val")].map(e => Number(e.value));
-const natural = [...document.querySelectorAll(".natural-val")].map(e => Number(e.value));
+// hidden から値取得
+const names   = Array.from(document.querySelectorAll(".stringer-name")).map(e => e.value);
+const poly    = Array.from(document.querySelectorAll(".poly-val")).map(e => Number(e.value));
+const nylon   = Array.from(document.querySelectorAll(".nylon-val")).map(e => Number(e.value));
+const natural = Array.from(document.querySelectorAll(".natural-val")).map(e => Number(e.value));
 
-const ctx = document.getElementById("stringerChart");
-
-new Chart(ctx, {
+new Chart(document.getElementById("stringerChart"), {
     type: "bar",
     data: {
         labels: names,
         datasets: [
-            { label: "ポリエステル", data: poly, backgroundColor: "rgba(255,99,132,0.5)" },
-            { label: "ナイロン", data: nylon, backgroundColor: "rgba(54,162,235,0.5)" },
-            { label: "ナチュラル", data: natural, backgroundColor: "rgba(255,206,86,0.5)" }
+            { label: "ポリエステル", data: poly },
+            { label: "ナイロン", data: nylon },
+            { label: "ナチュラル", data: natural }
         ]
     }
 });
