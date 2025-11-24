@@ -1,106 +1,120 @@
-/* ==============================
-   基本レイアウト
-============================== */
+@charset "UTF-8";
+
+/* ---------- カラーテーマ ---------- */
+:root {
+  --main-blue: #1e5bb8;
+  --dark-blue: #174a95;
+  --light-blue: #f5f8fc;
+  --white: #ffffff;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* ---------- 全体 ---------- */
 body {
-    font-family: 'Segoe UI', sans-serif;
-    background: #f5f8fc;
-    margin: 0;
-    padding: 0;
-    text-align: center;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+  background: linear-gradient(to bottom, var(--light-blue), #ffffff);
+  min-height: 100vh;
 }
 
 .logo {
-    width: 120px;
-    margin: 20px auto;
-    display: block;
+  width: 90px;
+  margin: 20px;
+}
+
+/* 戻るボタン */
+.back-btn {
+  display: inline-block;
+  margin-left: 20px;
+  padding: 6px 12px;
+  background-color: var(--main-blue);
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  box-shadow: var(--shadow);
 }
 
 h2 {
-    color: #1e5bb8;
-    margin-top: 10px;
+  text-align: center;
+  color: var(--main-blue);
+  margin-top: 5px;
 }
 
-.back-wrapper {
-    text-align: left;
-    margin-left: 20px;
-}
-
-.back-btn {
-    text-decoration: none;
-    color: #174a95;
-    font-weight: bold;
-    padding: 8px 12px;
-    border: 1px solid #174a95;
-    border-radius: 6px;
-}
-
+/* ---------- 期間表示 ---------- */
 .period {
-    margin: 15px auto;
-    font-size: 18px;
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 18px;
 }
 
-
-/* ==============================
-   年月選択フォーム
-============================== */
+/* ---------- フォーム ---------- */
 .select-form {
-    margin: 20px auto;
+  text-align: center;
+  margin-bottom: 15px;
 }
 
-.select-form select,
+.select-form select {
+  padding: 5px 8px;
+  margin: 0 5px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
 .select-form button {
-    padding: 6px 10px;
-    margin: 5px;
-    font-size: 16px;
+  padding: 6px 12px;
+  background-color: var(--dark-blue);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: var(--shadow);
 }
 
-.select-form button {
-    background: #1e5bb8;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
+.select-form button:hover {
+  opacity: 0.8;
 }
 
-
-/* ==============================
-   売上テーブル
-============================== */
+/* ---------- 売上テーブル ---------- */
 .sales-table {
-    margin: 20px auto;
-    width: 80%;
-    border-collapse: collapse;
-    font-size: 16px;
+  margin: 0 auto;
+  border-collapse: collapse;
+  width: 90%;
+  max-width: 600px;
+  background: white;
+  box-shadow: var(--shadow);
+}
+
+.sales-table th,
+.sales-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
 }
 
 .sales-table th {
-    background: #1e5bb8;
-    color: white;
-    padding: 10px;
+  background-color: var(--main-blue);
+  color: white;
 }
 
-.sales-table td {
-    padding: 8px;
-    border: 1px solid #ccc;
-    background: white;
+.sales-table .total {
+  font-weight: bold;
+  background-color: #e9f1ff;
 }
 
-.sales-table tr.total td {
-    background: #eaf3ff;
-    font-weight: bold;
-}
-
-
-/* ==============================
-   グラフ
-============================== */
+/* ---------- グラフ ---------- */
 .chart-wrapper {
-    width: 85%;
-    margin: 40px auto;
+  margin: 30px auto;
+  width: 92%;
+  max-width: 800px;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: var(--shadow);
 }
 
-canvas {
-    background: #fff;
-    padding: 20px;
-    border-radius: 10px;
+.chart-wrapper h3 {
+  text-align: center;
+  color: var(--dark-blue);
+  margin-top: 0;
 }
