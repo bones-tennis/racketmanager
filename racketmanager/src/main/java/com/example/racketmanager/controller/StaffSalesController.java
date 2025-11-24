@@ -1,6 +1,7 @@
 package com.example.racketmanager.controller;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -21,68 +22,74 @@ public class StaffSalesController {
     }
 
     @GetMapping("/staff/sales")
-    public String salesPage(
+    public String sales(
             @RequestParam(required = false) Integer year,
             @RequestParam(required = false) Integer month,
             Model model) {
 
-        // 年月が無い場合 → 今月扱い
-        LocalDate today = LocalDate.now();
-        if (year == null) year = today.getYear();
-        if (month == null) month = today.getMonthValue();
+        LocalDate now = LocalDate.now();
+        if (year == null) year = now.getYear();
+        if (month == null) month = now.getMonthValue();
 
-        // 10日締め：当月11日〜翌月10日
-        LocalDate start = LocalDate.of(year, month, 1).withDayOfMonth(11);
-        LocalDate end = start.plusMonths(1).withDayOfMonth(10);
+        // ==== ① 当月の締め期間 ====
+        LocalDate start = LocalDate.of(year, month, 1).minusMonths(1).withDayOfMonth(11);
+        LocalDate end = LocalDate.of(year, month, 10);
 
-        // 該当期間の注文取得
-        List<RacketOrder> orders = orderRepo.findByDueDateBetween(start, end);
+        List<RacketOrder> monthOrders = orderRepo.findByDueDateBetween(start, end);
 
-        // 種類別カウント & 張り代（純利益）
-        int poly = 0;
-        int nylon = 0;
-        int natural = 0;
+        int poly = 0, nylon = 0, natural = 0;
 
-        int polyRevenue = 0;
-        int nylonRevenue = 0;
-        int naturalRevenue = 0;
-
-        for (RacketOrder o : orders) {
-            if (o.getStringMaterial() == null) continue; // 念のため
-
-            String m = o.getStringMaterial();
-
-            switch (m) {
-                case "ポリエステル":
-                    poly++;
-                    polyRevenue += (o.getPrice() != null ? o.getPrice() : 0) - 800;
-                    break;
-                case "ナイロン":
-                    nylon++;
-                    nylonRevenue += (o.getPrice() != null ? o.getPrice() : 0) - 800;
-                    break;
-                case "ナチュラル":
-                    natural++;
-                    naturalRevenue += (o.getPrice() != null ? o.getPrice() : 0) - 1000;
-                    break;
+        for (RacketOrder o : monthOrders) {
+            if (o.getStringMaterial() == null) continue;
+            switch (o.getStringMaterial()) {
+                case "ポリエステル" -> poly++;
+                case "ナイロン" -> nylon++;
+                case "ナチュラル" -> natural++;
             }
         }
 
-        int totalRevenue = polyRevenue + nylonRevenue + naturalRevenue;
+        int monthTotal = poly * 800 + nylon * 800 + natural * 1000;
+
+        // ==== ② 年間の1〜12月集計 ====
+        List<Integer> polyList = new ArrayList<>();
+        List<Integer> nylonList = new ArrayList<>();
+        List<Integer> naturalList = new ArrayList<>();
+
+        for (int m = 1; m <= 12; m++) {
+            LocalDate ms = LocalDate.of(year, m, 1).minusMonths(1).withDayOfMonth(11);
+            LocalDate me = LocalDate.of(year, m, 10);
+
+            List<RacketOrder> mo = orderRepo.findByDueDateBetween(ms, me);
+
+            int p = 0, n = 0, na = 0;
+            for (RacketOrder o : mo) {
+                if (o.getStringMaterial() == null) continue;
+                switch (o.getStringMaterial()) {
+                    case "ポリエステル" -> p++;
+                    case "ナイロン" -> n++;
+                    case "ナチュラル" -> na++;
+                }
+            }
+
+            polyList.add(p);
+            nylonList.add(n);
+            naturalList.add(na);
+        }
+
+        // ==== Modelへ ====
+        model.addAttribute("poly", poly);
+        model.addAttribute("nylon", nylon);
+        model.addAttribute("natural", natural);
+        model.addAttribute("salesTotal", monthTotal);
+
+        model.addAttribute("polyList", polyList);
+        model.addAttribute("nylonList", nylonList);
+        model.addAttribute("naturalList", naturalList);
 
         model.addAttribute("year", year);
         model.addAttribute("month", month);
         model.addAttribute("start", start);
         model.addAttribute("end", end);
-
-        model.addAttribute("poly", poly);
-        model.addAttribute("nylon", nylon);
-        model.addAttribute("natural", natural);
-
-        model.addAttribute("polyRevenue", polyRevenue);
-        model.addAttribute("nylonRevenue", nylonRevenue);
-        model.addAttribute("naturalRevenue", naturalRevenue);
-        model.addAttribute("totalRevenue", totalRevenue);
 
         return "staff_sales";
     }

@@ -1,31 +1,27 @@
-/* ===== 共通レイアウト ===== */
 body {
-    font-family: "Segoe UI", sans-serif;
+    background: #f5f8fc;
+    font-family: 'Segoe UI', sans-serif;
     margin: 0;
-    padding: 0;
-    background: #f8f8f8;
 }
 
 .logo {
     width: 120px;
-    display: block;
-    margin: 20px auto;
+    margin: 20px;
 }
 
 h2 {
     text-align: center;
+    color: #1e5bb8;
+}
+
+.back {
+    text-align: center;
     margin-bottom: 10px;
 }
 
-.top-buttons {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.top-buttons a {
+.back-btn {
     color: #1e5bb8;
     text-decoration: none;
-    font-weight: bold;
 }
 
 .period {
@@ -34,7 +30,6 @@ h2 {
     font-size: 18px;
 }
 
-/* ===== フォーム ===== */
 .select-form {
     text-align: center;
     margin-bottom: 20px;
@@ -42,32 +37,32 @@ h2 {
 
 .select-form select,
 .select-form button {
-    padding: 5px 10px;
+    padding: 6px;
     font-size: 16px;
 }
 
-/* ===== 表 ===== */
 .sales-table {
-    margin: 0 auto;
-    border-collapse: collapse;
     width: 80%;
+    margin: auto;
+    border-collapse: collapse;
     background: white;
 }
-
-.sales-table th,
-.sales-table td {
+.sales-table th {
+    background: #1e5bb8;
+    color: white;
     padding: 10px;
-    border: 1px solid #555;
-    text-align: center;
 }
-
+.sales-table td {
+    border: 1px solid #ccc;
+    text-align: center;
+    padding: 10px;
+}
 .sales-table .total td {
     font-weight: bold;
-    background: #eef;
+    background: #e3eefc;
 }
 
-/* ===== グラフ ===== */
 .chart-wrapper {
-    width: 80%;
-    margin: 40px auto;
+    width: 90%;
+    margin: 30px auto;
 }
