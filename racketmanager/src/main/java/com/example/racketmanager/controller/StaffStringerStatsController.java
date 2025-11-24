@@ -30,70 +30,48 @@ public class StaffStringerStatsController {
             @RequestParam(required = false) Integer month,
             Model model) {
 
-        // ▼ 初回表示
         LocalDate now = LocalDate.now();
         if (year == null) year = now.getYear();
         if (month == null) month = now.getMonthValue();
 
-        // ▼ 10日締めの計算
         LocalDate end = LocalDate.of(year, month, 10);
         LocalDate start = end.minusMonths(1).plusDays(1);
 
-        // DB 取得
         List<RacketOrder> orders = orderRepo.findByDueDateBetween(start, end);
 
-        // ▼ 張り人ごとに集計（Map 使用）
-        // Map<String name, int[poly, nylon, natural]>
         Map<String, int[]> stats = new LinkedHashMap<>();
 
         for (RacketOrder o : orders) {
 
-            String name = o.getStringerName();
-            if (name == null || name.isBlank()) {
-                name = "不明";
-            }
-
-            String material = o.getStringMaterial();
-            if (material == null) continue;
-
+            String name = (o.getStringerName() == null ? "不明" : o.getStringerName());
             stats.putIfAbsent(name, new int[]{0, 0, 0});
-            int[] arr = stats.get(name);
 
-            switch (material) {
-                case "ポリエステル": arr[0]++; break;
-                case "ナイロン":     arr[1]++; break;
-                case "ナチュラル":   arr[2]++; break;
+            switch (o.getStringMaterial()) {
+                case "ポリエステル": stats.get(name)[0]++; break;
+                case "ナイロン":     stats.get(name)[1]++; break;
+                case "ナチュラル":   stats.get(name)[2]++; break;
             }
         }
 
-        // ▼ HTML へ渡す List 形式に変換
-        List<Map<String, Object>> stringerStats = new ArrayList<>();
-
-        for (String name : stats.keySet()) {
-            int[] arr = stats.get(name);
-
-            int poly = arr[0];
-            int nylon = arr[1];
-            int natural = arr[2];
-
-            int total = poly * 800 + nylon * 800 + natural * 1000;
+        List<Map<String, Object>> list = new ArrayList<>();
+        for (String s : stats.keySet()) {
+            int[] arr = stats.get(s);
+            int total = arr[0] * 800 + arr[1] * 800 + arr[2] * 1000;
 
             Map<String, Object> row = new HashMap<>();
-            row.put("name", name);
-            row.put("poly", poly);
-            row.put("nylon", nylon);
-            row.put("natural", natural);
+            row.put("name", s);
+            row.put("poly", arr[0]);
+            row.put("nylon", arr[1]);
+            row.put("natural", arr[2]);
             row.put("total", total);
-
-            stringerStats.add(row);
+            list.add(row);
         }
 
-        // ▼ 用意したデータを model へ
         model.addAttribute("year", year);
         model.addAttribute("month", month);
-        model.addAttribute("start", start.toString());
-        model.addAttribute("end", end.toString());
-        model.addAttribute("stringerStats", stringerStats);
+        model.addAttribute("start", start);
+        model.addAttribute("end", end);
+        model.addAttribute("stringerStats", list);
 
         return "staff_stringer_stats";
     }
