@@ -1,8 +1,6 @@
 package com.example.racketmanager.controller;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,11 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.racketmanager.model.RacketOrder;
 import com.example.racketmanager.repository.RacketOrderRepository;
 
 @Controller
-@RequestMapping("/staff/sales")
+@RequestMapping("/staff")
 public class StaffSalesController {
 
     private final RacketOrderRepository orderRepo;
@@ -23,56 +20,49 @@ public class StaffSalesController {
         this.orderRepo = orderRepo;
     }
 
-    // 売上ページ表示
-    @GetMapping
-    public String salesPage(
-            @RequestParam(required = false) String targetMonth,
+    @GetMapping("/sales")
+    public String showSales(
+            @RequestParam(required = false) Integer year,
+            @RequestParam(required = false) Integer month,
             Model model) {
 
-        // 例: targetMonth = "2025-01"
-        LocalDate start;
-        LocalDate end;
+        LocalDate now = LocalDate.now();
+        if (year == null) year = now.getYear();
+        if (month == null) month = now.getMonthValue();
 
-        if (targetMonth == null) {
-            LocalDate now = LocalDate.now();
-            start = LocalDate.of(now.getYear(), now.getMonth(), 11).minusMonths(1);
-            end = LocalDate.of(now.getYear(), now.getMonth(), 10);
-        } else {
-            LocalDate base = LocalDate.parse(targetMonth + "-01", DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            start = LocalDate.of(base.getYear(), base.getMonth(), 11).minusMonths(1);
-            end = LocalDate.of(base.getYear(), base.getMonth(), 10);
-        }
+        LocalDate start = LocalDate.of(year, month, 11).minusMonths(1);
+        LocalDate end = LocalDate.of(year, month, 10);
 
-        // 対象期間の注文を取得
-        List<RacketOrder> orders = orderRepo.findByDueDateBetween(start, end);
+        var orders = orderRepo.findByDueDateBetween(start, end);
 
-        int polyesterCount = 0;
-        int nylonCount = 0;
-        int naturalCount = 0;
+        int poly = (int) orders.stream()
+                .filter(o -> "ポリエステル".equals(o.getStringMaterial()))
+                .count();
+        int nylon = (int) orders.stream()
+                .filter(o -> "ナイロン".equals(o.getStringMaterial()))
+                .count();
+        int natural = (int) orders.stream()
+                .filter(o -> "ナチュラル".equals(o.getStringMaterial()))
+                .count();
 
-        for (RacketOrder o : orders) {
-            if (o.getStringMaterial() == null) continue;
+        int polySales = poly * 800;
+        int nylonSales = nylon * 800;
+        int naturalSales = natural * 1000;
+        int total = polySales + nylonSales + naturalSales;
 
-            switch (o.getStringMaterial()) {
-                case "ポリエステル" -> polyesterCount++;
-                case "ナイロン" -> nylonCount++;
-                case "ナチュラル" -> naturalCount++;
-            }
-        }
-
-        int total =
-                polyesterCount * 800 +
-                nylonCount * 800 +
-                naturalCount * 1000;
-
-        model.addAttribute("polyesterCount", polyesterCount);
-        model.addAttribute("nylonCount", nylonCount);
-        model.addAttribute("naturalCount", naturalCount);
-        model.addAttribute("total", total);
-
+        model.addAttribute("year", year);
+        model.addAttribute("month", month);
         model.addAttribute("start", start);
         model.addAttribute("end", end);
-        model.addAttribute("targetMonth", targetMonth);
+
+        model.addAttribute("poly", poly);
+        model.addAttribute("nylon", nylon);
+        model.addAttribute("natural", natural);
+
+        model.addAttribute("polySales", polySales);
+        model.addAttribute("nylonSales", nylonSales);
+        model.addAttribute("naturalSales", naturalSales);
+        model.addAttribute("salesTotal", total);
 
         return "staff_sales";
     }
