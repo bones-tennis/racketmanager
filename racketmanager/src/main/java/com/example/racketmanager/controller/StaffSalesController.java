@@ -1,7 +1,6 @@
 package com.example.racketmanager.controller;
 
 import java.time.LocalDate;
-import java.time.YearMonth;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -27,21 +26,20 @@ public class StaffSalesController {
             @RequestParam(required = false) Integer month,
             Model model) {
 
-        // ▼ 初回表示：今年の今月に自動設定
+        // ▼ 初回表示：今年の今月
         LocalDate now = LocalDate.now();
         if (year == null) year = now.getYear();
         if (month == null) month = now.getMonthValue();
 
-        // ▼ 〆日ロジック（月10日締め）
+        // ▼ 10日締め計算
         // 例：11月分 → 10月11日〜11月10日
-        YearMonth ym = YearMonth.of(year, month);
         LocalDate end = LocalDate.of(year, month, 10);
         LocalDate start = end.minusMonths(1).plusDays(1);
 
-        // DB取得
+        // ▼ DB取得
         List<RacketOrder> orders = orderRepo.findByDueDateBetween(start, end);
 
-        // ▼ 本数カウント
+        // ▼ 本数集計
         int poly = 0, nylon = 0, natural = 0;
 
         for (RacketOrder o : orders) {
@@ -60,11 +58,11 @@ public class StaffSalesController {
         int naturalPrice = natural * 1000;
         int salesTotal = polyPrice + nylonPrice + naturalPrice;
 
-        // ▼ HTML へ値を渡す
+        // ▼ HTMLへ値を渡す
         model.addAttribute("year", year);
         model.addAttribute("month", month);
-        model.addAttribute("start", start.toString());
-        model.addAttribute("end", end.toString());
+        model.addAttribute("start", start);
+        model.addAttribute("end", end);
 
         model.addAttribute("poly", poly);
         model.addAttribute("nylon", nylon);

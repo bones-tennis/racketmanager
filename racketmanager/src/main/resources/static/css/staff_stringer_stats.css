@@ -1,71 +1,101 @@
+/* ==============================
+   基本レイアウト
+============================== */
 body {
     font-family: 'Segoe UI', sans-serif;
+    background: #f5f8fc;
     margin: 0;
     padding: 0;
-    background: #f5f8fc;
+    text-align: center;
 }
 
 .logo {
     width: 120px;
-    margin: 20px;
+    margin: 20px auto;
+    display: block;
 }
 
 h2 {
-    text-align: center;
     color: #1e5bb8;
     margin-top: 10px;
 }
 
-.back {
-    text-align: center;
-    margin-bottom: 10px;
+.back-wrapper {
+    text-align: left;
+    margin-left: 20px;
 }
+
 .back-btn {
-    color: #1e5bb8;
     text-decoration: none;
-    font-size: 16px;
+    color: #174a95;
+    font-weight: bold;
+    padding: 8px 12px;
+    border: 1px solid #174a95;
+    border-radius: 6px;
 }
 
 .period {
-    text-align: center;
-    margin-bottom: 20px;
+    margin: 15px auto;
     font-size: 18px;
 }
 
+
+/* ==============================
+   年月フォーム
+============================== */
 .select-form {
-    text-align: center;
-    margin-bottom: 20px;
+    margin: 20px;
 }
 
-.select-form select, .select-form button {
-    padding: 6px;
-    margin: 0 5px;
+.select-form select,
+.select-form button {
+    padding: 6px 10px;
+    margin: 5px;
     font-size: 16px;
 }
 
-.table-wrapper {
-    width: 90%;
-    margin: auto;
+.select-form button {
+    background: #1e5bb8;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
 }
 
+
+/* ==============================
+   表（張り人別集計）
+============================== */
 .stats-table {
-    width: 100%;
+    margin: 20px auto;
+    width: 85%;
     border-collapse: collapse;
-    background: white;
-}
-
-.stats-table th, .stats-table td {
-    padding: 10px;
-    border: 1px solid #ddd;
-    text-align: center;
+    font-size: 16px;
 }
 
 .stats-table th {
-    background: #1e5bb8;
+    background: #174a95;
     color: white;
+    padding: 10px;
 }
 
+.stats-table td {
+    padding: 8px;
+    border: 1px solid #ccc;
+    background: white;
+}
+
+
+/* ==============================
+   グラフ
+============================== */
 .chart-wrapper {
     width: 90%;
-    margin: 30px auto;
+    margin: 40px auto;
+}
+
+canvas {
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
 }

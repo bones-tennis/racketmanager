@@ -13,11 +13,7 @@
 
 <h2>売上管理</h2>
 
-<div class="top-buttons">
-    <a th:href="@{/staff/orders}" class="back-btn">← 依頼一覧へ戻る</a>
-</div>
-
-<!-- 期間表示 -->
+<!-- 対象期間 -->
 <div class="period">
     <p>対象期間：<span th:text="${start}"></span> 〜 <span th:text="${end}"></span></p>
 </div>
@@ -25,17 +21,15 @@
 <!-- 年月選択フォーム -->
 <form method="get" action="/staff/sales" class="select-form">
     <select name="year" th:value="${year}">
-        <option th:each="y : ${#numbers.sequence(2024,2035)}"
-                th:value="${y}"
-                th:text="${y}">
+        <option th:each="y : ${#numbers.sequence(2024,2030)}"
+                th:value="${y}" th:text="${y}">
         </option>
     </select>
     年
 
     <select name="month" th:value="${month}">
         <option th:each="m : ${#numbers.sequence(1,12)}"
-                th:value="${m}"
-                th:text="${m}">
+                th:value="${m}" th:text="${m}">
         </option>
     </select>
     月
@@ -43,20 +37,41 @@
     <button type="submit">表示</button>
 </form>
 
+<!-- 戻るボタン -->
+<div class="back-wrapper">
+    <a href="/staff/orders" class="back-btn">← 依頼一覧へ戻る</a>
+</div>
+
+<!-- hidden（JS に値を安全に渡す） -->
+<input type="hidden" id="poly" th:value="${poly}">
+<input type="hidden" id="nylon" th:value="${nylon}">
+<input type="hidden" id="natural" th:value="${natural}">
+
+<input type="hidden" id="polyPrice" th:value="${polyPrice}">
+<input type="hidden" id="nylonPrice" th:value="${nylonPrice}">
+<input type="hidden" id="naturalPrice" th:value="${naturalPrice}">
+
+<input type="hidden" id="labelMonth" th:value="${month}">
+<input type="hidden" id="labelYear" th:value="${year}">
+
 <!-- 売上テーブル -->
 <table class="sales-table">
-    <tr><th>ガット種類</th><th>本数</th><th>売上</th></tr>
-
-    <tr th:each="row : ${salesList}">
-        <td th:text="${row.type}"></td>
-        <td th:text="${row.count}"></td>
-        <td th:text="${row.amount}"></td>
-
-        <!-- JS 用 hidden -->
-        <input type="hidden" class="type-name" th:value="${row.type}">
-        <input type="hidden" class="count-val" th:value="${row.count}">
+    <tr><th>素材</th><th>本数</th><th>売上</th></tr>
+    <tr>
+        <td>ポリエステル</td>
+        <td th:text="${poly}"></td>
+        <td th:text="${polyPrice}"></td>
     </tr>
-
+    <tr>
+        <td>ナイロン</td>
+        <td th:text="${nylon}"></td>
+        <td th:text="${nylonPrice}"></td>
+    </tr>
+    <tr>
+        <td>ナチュラル</td>
+        <td th:text="${natural}"></td>
+        <td th:text="${naturalPrice}"></td>
+    </tr>
     <tr class="total">
         <td>合計</td>
         <td></td>
@@ -66,24 +81,63 @@
 
 <!-- グラフ -->
 <div class="chart-wrapper">
-    <h3>ガット種類別本数グラフ</h3>
+    <h3>月別 張り本数 / 売上グラフ</h3>
     <canvas id="salesChart"></canvas>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-// hidden取得
-const typeNames = Array.from(document.querySelectorAll(".type-name")).map(e => e.value);
-const counts    = Array.from(document.querySelectorAll(".count-val")).map(e => Number(e.value));
+/* ==== hidden 値を JS で取得 ==== */
+const poly = Number(document.getElementById("poly").value);
+const nylon = Number(document.getElementById("nylon").value);
+const natural = Number(document.getElementById("natural").value);
 
-new Chart(document.getElementById("salesChart"), {
+const polyPrice = Number(document.getElementById("polyPrice").value);
+const nylonPrice = Number(document.getElementById("nylonPrice").value);
+const naturalPrice = Number(document.getElementById("naturalPrice").value);
+
+const year = document.getElementById("labelYear").value;
+const month = document.getElementById("labelMonth").value;
+
+/* ==== グラフ描画 ==== */
+const ctx = document.getElementById("salesChart");
+
+new Chart(ctx, {
     type: "bar",
     data: {
-        labels: typeNames,
-        datasets: [{
-            label: "本数",
-            data: counts
-        }]
+        labels: ["ポリエステル", "ナイロン", "ナチュラル"],
+        datasets: [
+            {
+                label: "本数",
+                data: [poly, nylon, natural],
+                backgroundColor: "rgba(54, 162, 235, 0.6)",
+                borderWidth: 1,
+                yAxisID: "y"
+            },
+            {
+                label: "売上（円）",
+                type: "line",
+                data: [polyPrice, nylonPrice, naturalPrice],
+                borderColor: "rgba(255, 99, 132, 1)",
+                borderWidth: 3,
+                yAxisID: "y1"
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true,
+                title: { display: true, text: "本数" }
+            },
+            y1: {
+                beginAtZero: true,
+                position: "right",
+                title: { display: true, text: "売上（円）" },
+                grid: { drawOnChartArea: false }
+            }
+        }
     }
 });
 </script>
