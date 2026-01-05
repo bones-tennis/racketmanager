@@ -43,7 +43,7 @@ public class User {
     // ==========================
     public User() {}
 
-    public User(String username, String password, String role, String email, String displayName) {
+    public User(String username, String password, String role, String displayName) {
         this.username = username;
         this.password = password;
         this.role = role;

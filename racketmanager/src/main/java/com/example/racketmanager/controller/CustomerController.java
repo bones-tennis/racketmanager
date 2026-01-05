@@ -66,7 +66,6 @@ public class CustomerController {
     @PostMapping("/mypage/update")
     public String updateMyPage(
             @RequestParam String username,
-            @RequestParam String email,
             Principal principal,
             RedirectAttributes redirectAttributes,
             HttpServletRequest request,
@@ -84,7 +83,6 @@ public class CustomerController {
                 userRepo.save(user);
 
                 System.out.println("更新後 username: " + username);
-                System.out.println("更新後 email: " + email);
 
                 redirectAttributes.addFlashAttribute("updated", true);
                 new SecurityContextLogoutHandler().logout(request, response, null);
