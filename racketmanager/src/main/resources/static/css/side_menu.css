@@ -1,3 +1,17 @@
+/* =========================================
+   Side Menu (Complete Version)
+   - Slide in/out with animation
+   - Overlay fade
+   - Logout button red
+   - Prevent horizontal overflow
+   ========================================= */
+
+/* 横はみ出し防止 */
+html, body{
+  overflow-x: hidden;
+}
+
+/* ヘッダー（ハンバーガー + ロゴ） */
 .app-header{
   display:flex;
   align-items:center;
@@ -5,59 +19,130 @@
   padding:12px 16px;
 }
 
+/* ハンバーガー */
 .hamburger{
   font-size:24px;
   background:transparent;
   border:none;
   cursor:pointer;
+  padding:6px 10px;
+  border-radius:10px;
+  transition: background .15s ease, transform .15s ease;
 }
 
-.side-menu{
-  position:fixed;
-  top:0;
-  left:-260px;
-  width:260px;
-  height:100%;
-  background:#fff;
-  box-shadow:2px 0 12px rgba(0,0,0,.25);
-  padding:16px;
-  transition:left .2s ease;
-  z-index:1001;
+.hamburger:hover{
+  background: rgba(0,0,0,.06);
 }
 
-.side-menu.open{ left:0; }
-
-.side-menu a{
-  display:block;
-  padding:10px 8px;
-  color:#111;
-  text-decoration:none;
-  border-radius:8px;
+.hamburger:active{
+  transform: scale(0.96);
 }
 
-.side-menu a:hover{ background:#f3f3f3; }
-
-.menu-title{
-  font-weight:700;
-  margin-bottom:8px;
-}
-
-.menu-logout{ margin-top:12px; }
-
-.menu-logout button{ width:100%; padding:10px; }
-
-/* 背景を暗くするやつ */
+/* オーバーレイ（背景を暗く） */
 .overlay{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.35);
+  background: rgba(0,0,0,.40);
   opacity:0;
   pointer-events:none;
-  transition:opacity .2s ease;
+  transition: opacity .22s ease;
   z-index:1000;
 }
 
 .overlay.show{
   opacity:1;
   pointer-events:auto;
+}
+
+/* サイドメニュー本体（transformで隠す：競合に強い） */
+.side-menu{
+  position:fixed;
+  top:0;
+  left:0;
+  width:260px;
+  max-width:80vw;
+  height:100vh;
+  background:#fff;
+  box-shadow: 2px 0 14px rgba(0,0,0,.25);
+  padding:16px;
+  z-index:1001;
+
+  /* ここが重要：押す前は画面外 */
+  transform: translateX(-110%);
+  transition: transform .24s ease;
+
+  /* スクロールが必要な時 */
+  overflow-y:auto;
+
+  /* 開く時の体感改善 */
+  will-change: transform;
+}
+
+/* 開いた状態 */
+.side-menu.open{
+  transform: translateX(0);
+}
+
+/* メニュー内部のタイトル */
+.menu-title{
+  font-weight:700;
+  margin-bottom:10px;
+  letter-spacing: .02em;
+}
+
+/* メニューリンク */
+.side-menu a{
+  display:block;
+  padding:10px 10px;
+  color:#111;
+  text-decoration:none;
+  border-radius:10px;
+  transition: background .15s ease, transform .15s ease;
+}
+
+.side-menu a:hover{
+  background:#f3f3f3;
+}
+
+.side-menu a:active{
+  transform: translateX(2px);
+}
+
+/* 区切り線 */
+.side-menu hr{
+  border:none;
+  border-top:1px solid #eee;
+  margin:12px 0;
+}
+
+/* ログアウト（赤） */
+.menu-logout{
+  margin-top:12px;
+}
+
+.menu-logout button{
+  width:100%;
+  padding:10px;
+  background:#e53935;
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  font-weight:700;
+  cursor:pointer;
+  transition: background .15s ease, transform .15s ease;
+}
+
+.menu-logout button:hover{
+  background:#c62828;
+}
+
+.menu-logout button:active{
+  transform: scale(0.98);
+}
+
+/* （任意）ロゴの見た目調整：既存CSSと競合するなら消してOK */
+.logo{
+  height:40px;
+  width:auto;
+  border-radius:8px;
 }

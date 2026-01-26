@@ -2,13 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="/css/side_menu.css">
+  <script src="/js/side_menu.js" defer></script>
   <title>顧客情報編集</title>
   <link rel="stylesheet" href="/css/staff_customers.css">
 </head>
 <body>
-<header>
-  <img src="/css/images/bones.jpg" alt="bones ロゴ" class="logo">
-</header>
+	<div th:replace="fragments/side_menu :: sideMenu"></div>
 
 <h2>顧客情報の編集</h2>
 

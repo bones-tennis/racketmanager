@@ -2,14 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="/css/side_menu.css">
+  <script src="/js/side_menu.js" defer></script>
   <title>依頼編集</title>
   <link rel="stylesheet" href="/css/order_form.css">
 </head>
 <body>
+	<div th:replace="fragments/side_menu :: sideMenu"></div>
   <h2>依頼編集</h2>
-  <header>
-    <img src="/css/images/bones.jpg" alt="bones ロゴ" class="logo">
-  </header>
 
   <form th:action="@{|/staff/orders/${order.id}/update|}" method="post">
     <label>顧客名</label>

@@ -2,15 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="/css/side_menu.css">
+  <script src="/js/side_menu.js" defer></script>
   <title>新規依頼登録</title>
   <link rel="stylesheet" href="/css/order_form.css">
 </head>
 <body>
+  <div th:replace="fragments/side_menu :: sideMenu"></div>
   <h2>新規依頼登録</h2>
-  <header>
-    <img src="/css/images/bones.jpg" alt="bones ロゴ" class="logo">
-  </header>
-
   <form th:action="@{/staff/orders}" method="post">
     <label for="customerSearch">顧客名</label>
     <div class="search-wrapper">
