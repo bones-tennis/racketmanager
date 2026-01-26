@@ -8,11 +8,8 @@
   <title>依頼一覧（スタッフ）</title>
 </head>
 <body>
-	<div>th:replace="fragments/side_menu :: body"></div>
+	<div th:replace="fragments/side_menu :: sideMenu"></div>
   <h2>依頼一覧（スタッフ）</h2>
-  <header>
-  	  <img src="/css/images/bones.jpg" alt="bones ロゴ" class="logo">
-  	</header>
   <!-- フィルタフォーム -->
   <form th:action="@{/staff/orders}" method="get">
     <div class="form-group">
