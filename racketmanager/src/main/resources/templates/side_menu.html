@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+  <header class="app-header">
+    <button class="hamburger" type="button" aria-label="メニュー" onclick="openMenu()">☰</button>
+    <img src="/css/images/bones.jpg" alt="bones ロゴ" class="logo">
+  </header>
+
+  <!-- 背景を暗くするオーバーレイ -->
+  <div id="overlay" class="overlay" onclick="closeMenu()"></div>
+
+  <!-- サイドメニュー本体 -->
+  <nav id="sideMenu" class="side-menu">
+    <div class="menu-title">MENU</div>
+
+    <a th:href="@{/staff/orders}">依頼一覧</a>
+    <a th:href="@{/staff/orders/new}">新規依頼登録</a>
+    <a th:href="@{/staff/customers}">顧客一覧</a>
+    <a th:href="@{/staff/stringer-stats}">張り実績</a>
+
+    <hr>
+
+    <form th:action="@{/logout}" method="post" class="menu-logout">
+      <button type="submit">ログアウト</button>
+    </form>
+  </nav>
+</body>
+</html>
