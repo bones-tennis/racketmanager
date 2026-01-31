@@ -15,10 +15,6 @@
 body {
   font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
   background: linear-gradient(to bottom, var(--light-blue), #ffffff);
-  background-repeat: no-repeat;
-  background: #ffffff;
-  background-position: right 40px center;
-  background-size: 40%;
   min-height: 100vh;
   margin: 0;
   padding: 0;
@@ -32,9 +28,8 @@ h2 {
   margin-bottom: 20px;
 }
 
-
-/* ---------- フォーム ---------- */
-form {
+/* ---------- フォーム（★新規依頼フォームだけに限定） ---------- */
+.order-form {
   max-width: 650px;
   margin: 0 auto;
   background-color: var(--white);
@@ -47,25 +42,27 @@ form {
 }
 
 @media (max-width: 600px) {
-  form {
+  .order-form {
     grid-template-columns: 1fr;
+    padding: 15px;
   }
 }
 
-form label {
+.order-form label {
   font-weight: 600;
   margin-bottom: 4px;
   display: block;
   color: #333;
   font-size: 14px;
 }
+
 /* ---------- 顧客名のドロップダウン ---------- */
-.search-wrapper {
+.order-form .search-wrapper {
   position: relative;
   width: 100%;
 }
 
-#customerSearch {
+.order-form #customerSearch {
   width: 100%;
   padding: 10px;
   font-size: 14px;
@@ -74,7 +71,8 @@ form label {
   box-sizing: border-box;
 }
 
-.suggest-list {
+/* サジェスト */
+.order-form .suggest-list {
   display: none;
   position: absolute;
   top: 40px;
@@ -93,41 +91,37 @@ form label {
   z-index: 1000;
 }
 
-.suggest-list li {
+.order-form .suggest-list li {
   padding: 10px;
   cursor: pointer;
 }
 
-.suggest-list li:hover {
+.order-form .suggest-list li:hover {
   background-color: #f5f8fc;
 }
 
-
-/* ---------- input wrapper（浮き上がる） ---------- */
-.input-wrapper {
+/* ---------- wrapper ---------- */
+.order-form .input-wrapper {
   display: block;
   transition: transform 0.25s ease;
 }
-
-.input-wrapper:focus-within {
+.order-form .input-wrapper:focus-within {
   transform: scale(1.01);
 }
 
-/* ---------- select wrapper（浮き上がらない） ---------- */
-.select-wrapper {
+.order-form .select-wrapper {
   display: block;
   transition: none;
 }
-
-.select-wrapper:focus-within {
+.order-form .select-wrapper:focus-within {
   transform: none;
 }
 
-/* ---------- 入力欄 / セレクト ---------- */
-form input[type="text"],
-form input[type="number"],
-form input[type="date"],
-form select {
+/* ---------- 入力欄 / セレクト（★限定） ---------- */
+.order-form input[type="text"],
+.order-form input[type="number"],
+.order-form input[type="date"],
+.order-form select {
   width: 100%;
   padding: 10px;
   border: 1px solid var(--border);
@@ -140,14 +134,14 @@ form select {
   transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
 }
 
-form input::placeholder {
+.order-form input::placeholder {
   color: var(--placeholder);
 }
 
 /* ---------- input のフォーカス時 ---------- */
-form input[type="text"]:focus,
-form input[type="number"]:focus,
-form input[type="date"]:focus {
+.order-form input[type="text"]:focus,
+.order-form input[type="number"]:focus,
+.order-form input[type="date"]:focus {
   outline: none;
   border-color: var(--main-blue);
   background-color: var(--white);
@@ -155,8 +149,8 @@ form input[type="date"]:focus {
   transform: scale(1.01);
 }
 
-/* ---------- select のフォーカス時（ぶるぶる対策） ---------- */
-form select:focus {
+/* ---------- select のフォーカス時 ---------- */
+.order-form select:focus {
   outline: none;
   border-color: var(--main-blue);
   background-color: var(--white);
@@ -164,8 +158,8 @@ form select:focus {
   transform: none;
 }
 
-/* ---------- ボタン ---------- */
-.form-buttons {
+/* ---------- ボタン列 ---------- */
+.order-form .form-buttons {
   grid-column: 1 / -1;
   display: flex;
   justify-content: center;
@@ -173,8 +167,9 @@ form select:focus {
   margin-top: 10px;
 }
 
-button[type="submit"],
-.back-btn {
+/* ★ submitボタンも order-form 内だけに限定（ログアウトを巻き込まない） */
+.order-form button[type="submit"],
+.order-form .back-btn {
   background: linear-gradient(to bottom right, var(--main-blue), var(--dark-blue));
   color: var(--white);
   border: none;
@@ -187,35 +182,31 @@ button[type="submit"],
   display: inline-block;
 }
 
-button[type="submit"]:hover,
-.back-btn:hover {
+.order-form button[type="submit"]:hover,
+.order-form .back-btn:hover {
   box-shadow: 0 6px 14px rgba(30, 91, 184, 0.3);
   transform: translateY(-2px);
 }
 
-/* ---------- スマホ対応 ---------- */
+/* ---------- スマホ対応（ボタンサイズ） ---------- */
 @media (max-width: 600px) {
   h2 {
     font-size: 20px;
     margin-top: 20px;
   }
 
-  form {
-    padding: 15px;
-  }
-
-  form label {
+  .order-form label {
     font-size: 13px;
   }
 
-  form input,
-  form select {
+  .order-form input,
+  .order-form select {
     font-size: 13px;
     padding: 8px;
   }
 
-  button[type="submit"],
-  .back-btn {
+  .order-form button[type="submit"],
+  .order-form .back-btn {
     font-size: 14px;
     padding: 9px 16px;
   }

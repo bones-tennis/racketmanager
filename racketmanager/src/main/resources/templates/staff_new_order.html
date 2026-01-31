@@ -10,7 +10,7 @@
 <body>
 	<div th:replace="side_menu :: sideMenu"></div>
   <h2>新規依頼登録</h2>
-  <form th:action="@{/staff/orders}" method="post">
+  <form th:action="@{/staff/orders}" method="post" class="order-form">
     <label for="customerSearch">顧客名</label>
     <div class="search-wrapper">
       <input type="text" id="customerSearch" placeholder="顧客名を検索..." autocomplete="off">
