@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="/css/order_form.css">
 </head>
 <body>
-	<div th:replace="fragments/side_menu :: sideMenu"></div>
+	<div th:replace="side_menu :: sideMenu"></div>
   <h2>依頼編集</h2>
 
   <form th:action="@{|/staff/orders/${order.id}/update|}" method="post">

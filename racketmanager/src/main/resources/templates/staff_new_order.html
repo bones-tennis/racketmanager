@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="/css/order_form.css">
 </head>
 <body>
-  <div th:replace="fragments/side_menu :: sideMenu"></div>
+	<div th:replace="side_menu :: sideMenu"></div>
   <h2>新規依頼登録</h2>
   <form th:action="@{/staff/orders}" method="post">
     <label for="customerSearch">顧客名</label>
