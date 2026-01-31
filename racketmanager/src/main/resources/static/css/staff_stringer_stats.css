@@ -1,5 +1,4 @@
 @charset "UTF-8";
-
 /* ---------- カラーテーマ ---------- */
 :root {
   --main-blue: #1e5bb8;
@@ -17,24 +16,6 @@ body {
   background: linear-gradient(to bottom, var(--light-blue), #ffffff);
   min-height: 100vh;
 }
-
-.logo {
-  width: 90px;
-  margin: 20px;
-}
-
-/* 戻るボタン */
-.back-btn {
-  display: inline-block;
-  margin-left: 20px;
-  padding: 6px 12px;
-  background-color: var(--main-blue);
-  color: white;
-  border-radius: 6px;
-  text-decoration: none;
-  box-shadow: var(--shadow);
-}
-
 h2 {
   text-align: center;
   color: var(--main-blue);
