@@ -13,6 +13,7 @@
 
 /* ---------- 全体 ---------- */
 body {
+  background: #ffffff !important;
   font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
   background: linear-gradient(to bottom, var(--light-blue), #ffffff);
   min-height: 100vh;
