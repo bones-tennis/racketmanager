@@ -10,6 +10,7 @@
 
 /* ---------- 全体 ---------- */
 body {
+	background: hotpink !important;
   margin: 0;
   padding: 0;
   font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
