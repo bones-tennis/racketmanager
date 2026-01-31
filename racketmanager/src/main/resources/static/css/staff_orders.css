@@ -34,38 +34,7 @@ h2 {
   margin-top: 40px;
   margin-bottom: 30px;
 }
-/* ---------- 左上ロゴ（bones） ---------- */
-header {
-  position: absolute;
-  top: -20px;
-  left: 20px;
-  
-}
 
-header .logo {
-  height: 45px;
-  width: auto;
-  object-fit: contain;
-}
-@media (max-width: 900px) {
-  header .logo {
-    height: 50px;
-  }
-
-  main {
-    margin-top: 110px;
-  }
-}
-
-@media (max-width: 600px) {
-  header .logo {
-    height: 35px;
-  }
-
-  main {
-    margin-top: 90px;
-  }
-}
 /* ---------- フィルタフォーム ---------- */
 form[method="get"] {
   display: flex;

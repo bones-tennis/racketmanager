@@ -12,12 +12,6 @@
 
 <h2>顧客一覧</h2>
 
-<div class="top-buttons">
-    <a th:href="@{/staff/orders}" class="back-btn">依頼一覧へ</a>
-    <form th:action="@{/logout}" method="post" style="display:inline;">
-    </form>
-  </div>
-
 <!-- 🔸 検索フォーム -->
 <form th:action="@{/staff/customers}" method="get" class="search-form">
   <input type="text" name="keyword" placeholder="顧客名で検索" th:value="${keyword}">
