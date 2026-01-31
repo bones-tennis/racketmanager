@@ -9,7 +9,6 @@
 </head>
 <body>
 	<div th:replace="side_menu :: sideMenu"></div>
-<a th:href="@{/staff/orders}" class="back-btn">依頼一覧に戻る</a>
 
 <h2>張り人別 集計</h2>
 
@@ -38,40 +37,8 @@
         <td th:text="${s.nylon}"></td>
         <td th:text="${s.natural}"></td>
         <td th:text="${s.total}"></td>
-
-        <!-- hidden for JS -->
-        <input type="hidden" class="name" th:value="${s.name}">
-        <input type="hidden" class="p" th:value="${s.poly}">
-        <input type="hidden" class="n" th:value="${s.nylon}">
-        <input type="hidden" class="na" th:value="${s.natural}">
     </tr>
 </table>
 </div>
-
-<div class="chart-wrapper">
-    <h3>張り人別グラフ</h3>
-    <canvas id="stringerChart"></canvas>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-const names = [...document.querySelectorAll(".name")].map(e => e.value);
-const poly = [...document.querySelectorAll(".p")].map(e => Number(e.value));
-const nylon = [...document.querySelectorAll(".n")].map(e => Number(e.value));
-const natural = [...document.querySelectorAll(".na")].map(e => Number(e.value));
-
-new Chart(document.getElementById("stringerChart"), {
-    type: "bar",
-    data: {
-        labels: names,
-        datasets: [
-            { label: "ポリエステル", data: poly },
-            { label: "ナイロン", data: nylon },
-            { label: "ナチュラル", data: natural }
-        ]
-    }
-});
-</script>
-
 </body>
 </html>

@@ -146,3 +146,32 @@ html, body{
   width:auto;
   border-radius:8px;
 }
+/* サイドメニュー内のformを、ページ側のform CSSに巻き込ませない */
+.side-menu form{
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100%;
+}
+
+/* サイドメニュー内のボタンを、ページ側button CSSに巻き込ませない */
+.side-menu button{
+  all: unset;                 /* ← 既存CSSを全部リセット */
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+/* ログアウトだけ赤にする（上の all:unset 後にもう一度指定） */
+.side-menu .menu-logout button{
+  background: #e53935;
+  color: #fff;
+}
+
+.side-menu .menu-logout button:hover{
+  background: #c62828;
+}

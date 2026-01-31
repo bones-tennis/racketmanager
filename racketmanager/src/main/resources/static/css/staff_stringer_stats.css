@@ -6,7 +6,7 @@
   --dark-blue: #174a95;
   --light-blue: #f5f8fc;
   --white: #ffffff;
-  --shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
 /* ---------- 全体 ---------- */
@@ -105,21 +105,4 @@ form button:hover {
 
 .table-wrapper tr:nth-child(even) {
   background-color: #f2f6ff;
-}
-
-/* ---------- グラフ ---------- */
-.chart-wrapper {
-  width: 92%;
-  max-width: 900px;
-  margin: 25px auto;
-  padding: 20px;
-  background: white;
-  border-radius: 10px;
-  box-shadow: var(--shadow);
-}
-
-.chart-wrapper h3 {
-  text-align: center;
-  color: var(--dark-blue);
-  margin-top: 0;
 }
