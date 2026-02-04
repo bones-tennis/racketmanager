@@ -253,3 +253,10 @@ button.link-btn:disabled{
   cursor: not-allowed;
   transform: none;
 }
+/* LINE連携ボタンだけ「登録」ボタンと同じ幅にする */
+form .line-btn{
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin-top: 10px; /* 今の inline style の代わり */
+}
