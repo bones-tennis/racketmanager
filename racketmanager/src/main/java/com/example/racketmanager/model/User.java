@@ -1,5 +1,7 @@
 package com.example.racketmanager.model;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,17 +28,29 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    // ROLE_CUSTOMER / ROLE_STAFF
     @Column(nullable = false)
     private String role;
-
 
     // 🪪 表示用の名前（平文）
     @Column(nullable = false)
     private String displayName;
 
-    // local or google
+    // local / google / etc
     @Column(nullable = false)
     private String provider;
+
+    // ==========================
+    // 📱 LINE連携用
+    // ==========================
+
+    // LINEのユーザーID（Push通知に使う）
+    @Column(name = "line_user_id")
+    private String lineUserId;
+
+    // LINE連携した日時
+    @Column(name = "line_linked_at")
+    private LocalDateTime lineLinkedAt;
 
     // ==========================
     // 🧱 コンストラクタ
@@ -54,25 +68,62 @@ public class User {
     // ==========================
     // 🧭 Getter / Setter
     // ==========================
-    public Long getId() { return id; }
+    public Long getId() { 
+        return id; 
+    }
 
-    public String getUsername() { return username; }
-    public void setUsername(String username) { this.username = username; }
+    public String getUsername() { 
+        return username; 
+    }
+    public void setUsername(String username) { 
+        this.username = username; 
+    }
 
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
+    public String getPassword() { 
+        return password; 
+    }
+    public void setPassword(String password) { 
+        this.password = password; 
+    }
 
-    public String getRole() { return role; }
-    public void setRole(String role) { this.role = role; }
+    public String getRole() { 
+        return role; 
+    }
+    public void setRole(String role) { 
+        this.role = role; 
+    }
 
-    public String getDisplayName() { return displayName; }
-    public void setDisplayName(String displayName) { this.displayName = displayName; }
+    public String getDisplayName() { 
+        return displayName; 
+    }
+    public void setDisplayName(String displayName) { 
+        this.displayName = displayName; 
+    }
 
-    public String getProvider() { return provider; }
-    public void setProvider(String provider) { this.provider = provider; }
+    public String getProvider() { 
+        return provider; 
+    }
+    public void setProvider(String provider) { 
+        this.provider = provider; 
+    }
+
+    // ===== LINE =====
+    public String getLineUserId() {
+        return lineUserId;
+    }
+    public void setLineUserId(String lineUserId) {
+        this.lineUserId = lineUserId;
+    }
+
+    public LocalDateTime getLineLinkedAt() {
+        return lineLinkedAt;
+    }
+    public void setLineLinkedAt(LocalDateTime lineLinkedAt) {
+        this.lineLinkedAt = lineLinkedAt;
+    }
 
     // ==========================
-    // 🪄 復号用 Getter（Thymeleaf表示などで利用）
+    // 🪄 復号用 Getter（表示専用）
     // ==========================
     @Transient
     public String getUsernameDecrypted() {
