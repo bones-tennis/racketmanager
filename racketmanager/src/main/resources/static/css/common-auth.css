@@ -209,3 +209,47 @@ form button:active {
   border-radius: 9999px;
 }
 
+/* button.link-btn にも link-btn のサイズ仕様を強制適用 */
+button.link-btn{
+  /* a.link-btn と揃える */
+  display: inline-block;
+  width: 350px;
+  max-width: 91%;
+  padding: 16px;
+  border-radius: 9999px;
+  font-size: 15px;
+  text-align: center;
+
+  /* button固有の差を潰す */
+  border: none;
+  box-sizing: border-box;
+  appearance: none;
+  -webkit-appearance: none;
+
+  /* 既存の link-btn と同じ動き */
+  background-color: var(--main-blue);
+  color: var(--white);
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s ease;
+
+  /* あなたのHTMLの inline style (margin-top:10px) があってもOKだが、
+     link-btn側の margin-top:15px に統一したい場合はここで上書きも可能 */
+  margin-top: 15px;
+}
+
+/* hover/active も a.link-btn と合わせる */
+button.link-btn:hover{
+  background-color: var(--dark-blue);
+  transform: scale(1.02);
+}
+
+button.link-btn:active{
+  transform: scale(0.98);
+}
+
+/* disabled の見た目（連携済みで押せなくなる想定） */
+button.link-btn:disabled{
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
