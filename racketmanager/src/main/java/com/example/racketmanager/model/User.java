@@ -44,7 +44,7 @@ public class User {
     // 📱 LINE連携用
     // ==========================
 
-    // LINEのユーザーID（Push通知に使う）
+    // LINEのユーザーID（Push通知に使用）
     @Column(name = "line_user_id")
     private String lineUserId;
 
@@ -62,62 +62,71 @@ public class User {
         this.password = password;
         this.role = role;
         this.displayName = displayName;
-        this.provider = "local"; // デフォルト
+        this.provider = "local";
     }
 
     // ==========================
     // 🧭 Getter / Setter
     // ==========================
-    public Long getId() { 
-        return id; 
+    public Long getId() {
+        return id;
     }
 
-    public String getUsername() { 
-        return username; 
+    public String getUsername() {
+        return username;
     }
-    public void setUsername(String username) { 
-        this.username = username; 
-    }
-
-    public String getPassword() { 
-        return password; 
-    }
-    public void setPassword(String password) { 
-        this.password = password; 
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getRole() { 
-        return role; 
+    public String getPassword() {
+        return password;
     }
-    public void setRole(String role) { 
-        this.role = role; 
-    }
-
-    public String getDisplayName() { 
-        return displayName; 
-    }
-    public void setDisplayName(String displayName) { 
-        this.displayName = displayName; 
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getProvider() { 
-        return provider; 
+    public String getRole() {
+        return role;
     }
-    public void setProvider(String provider) { 
-        this.provider = provider; 
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getProvider() {
+        return provider;
+    }
+    public void setProvider(String provider) {
+        this.provider = provider;
     }
 
     // ===== LINE =====
     public String getLineUserId() {
         return lineUserId;
     }
+
+    /**
+     * LINEユーザーIDをセットする際に、連携日時も自動で入れる
+     */
     public void setLineUserId(String lineUserId) {
         this.lineUserId = lineUserId;
+        if (lineUserId != null && !lineUserId.isBlank()) {
+            this.lineLinkedAt = LocalDateTime.now();
+        }
     }
 
     public LocalDateTime getLineLinkedAt() {
         return lineLinkedAt;
     }
+
+    // 明示的にセットしたい場合用（基本は使わなくてOK）
     public void setLineLinkedAt(LocalDateTime lineLinkedAt) {
         this.lineLinkedAt = lineLinkedAt;
     }

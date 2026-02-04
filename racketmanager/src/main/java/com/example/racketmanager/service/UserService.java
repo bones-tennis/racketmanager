@@ -21,7 +21,7 @@ public class UserService {
     /**
      * ユーザー登録処理
      */
-    public void registerUser(String username, String password, String role) {
+    public void registerUser(String username, String password, String role, String lineUserId) {
 
         String encryptedUsername = EncryptionUtil.encrypt(username);
         String encodedPassword = passwordEncoder.encode(password);
@@ -32,7 +32,9 @@ public class UserService {
         user.setRole("ROLE_" + role);
         user.setDisplayName(username);
         user.setProvider("local");
+        user.setLineUserId(lineUserId);
 
         userRepo.save(user);
     }
+
 }

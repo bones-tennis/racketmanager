@@ -1,31 +1,110 @@
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>会員登録</title>
-    <link rel="stylesheet" href="/css/common-auth.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>会員登録</title>
+  <link rel="stylesheet" href="/css/common-auth.css">
+
+  <!-- LIFF SDK -->
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 </head>
 <body>
-    <header>
-        <img src="/css/images/bones.jpg" alt="bones ロゴ" class="logo">
-    </header>
+<header>
+  <img src="/css/images/bones.jpg" alt="bones ロゴ" class="logo">
+</header>
 
-    <h2>会員登録</h2>
+<h2>会員登録</h2>
 
-    <form th:action="@{/signup}" method="post" th:object="${user}">
-        <div>
-            <label>ユーザー名</label>
-            <input type="text" th:field="*{username}" autocomplete="off" required>
-        </div>
+<form th:action="@{/signup}" method="post" th:object="${user}">
+  <div>
+    <label>ユーザー名</label>
+    <input type="text" th:field="*{username}" autocomplete="username" required>
+  </div>
 
-        <div>
-            <label>パスワード</label>
-            <input type="password" th:field="*{password}" autocomplete="new-password" required>
-        </div>
+  <div>
+    <label>パスワード</label>
+    <input type="password" th:field="*{password}" autocomplete="new-password" required>
+  </div>
 
-        <button type="submit">登録</button>
-        <a th:href="@{/login}" class="link-btn">ログインページへ</a>
-    </form>
+  <!-- ✅ LINE連携情報（hidden） -->
+  <input type="hidden" name="lineUserId" id="lineUserId">
+
+  <!-- ✅ LINE連携ボタン -->
+  <button type="button" id="lineLinkBtn" class="link-btn" style="margin-top:10px;">
+    LINE連携する
+  </button>
+
+  <!-- 状態表示 -->
+  <div id="lineStatus" style="margin-top:10px; font-size:14px;"></div>
+
+  <button type="submit" id="submitBtn" disabled>登録</button>
+  <a th:href="@{/login}" class="link-btn">ログインページへ</a>
+</form>
+
+<script th:inline="javascript">
+  // Controllerから渡す LIFF ID
+  const LIFF_ID = /*[[${liffId}]]*/ "";
+
+  const lineUserIdInput = document.getElementById("lineUserId");
+  const lineLinkBtn = document.getElementById("lineLinkBtn");
+  const lineStatus = document.getElementById("lineStatus");
+  const submitBtn = document.getElementById("submitBtn");
+
+  function setLinked(userId){
+    lineUserIdInput.value = userId;
+    lineStatus.textContent = "✅ LINE連携済み";
+    lineLinkBtn.textContent = "LINE連携済み";
+    lineLinkBtn.disabled = true;
+    submitBtn.disabled = false; // ✅ 連携できたら登録OK
+  }
+
+  async function linkLine(){
+    try{
+      if(!LIFF_ID){
+        lineStatus.textContent = "❌ LIFF ID が未設定です（Controllerから渡せてない）";
+        return;
+      }
+
+      await liff.init({ liffId: LIFF_ID });
+
+      if(!liff.isLoggedIn()){
+        // LINEログインへ
+        liff.login();
+        return;
+      }
+
+      const profile = await liff.getProfile();
+      if(profile && profile.userId){
+        setLinked(profile.userId);
+      }else{
+        lineStatus.textContent = "❌ LINEユーザーIDが取得できませんでした";
+      }
+
+    }catch(e){
+      console.error(e);
+      lineStatus.textContent = "❌ LINE連携に失敗しました（Console/Renderログ確認）";
+    }
+  }
+
+  lineLinkBtn.addEventListener("click", linkLine);
+
+  // もし既にログイン状態なら自動で取得（押さなくてもOKにしたい場合）
+  (async () => {
+    try{
+      if(!LIFF_ID) return;
+      await liff.init({ liffId: LIFF_ID });
+      if(liff.isLoggedIn()){
+        const profile = await liff.getProfile();
+        if(profile?.userId){
+          setLinked(profile.userId);
+        }
+      }
+    }catch(e){
+      // ここは静かに無視でOK
+    }
+  })();
+</script>
+
 </body>
 </html>

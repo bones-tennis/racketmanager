@@ -1,10 +1,9 @@
 package com.example.racketmanager.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.racketmanager.model.User;
 import com.example.racketmanager.service.UserService;
@@ -14,37 +13,45 @@ public class AuthController {
 
     private final UserService userService;
 
+    @Value("${line.liff-id:}")
+    private String liffId;
+
     public AuthController(UserService userService) {
         this.userService = userService;
     }
 
-    // ======================
-    // サインアップ画面
-    // ======================
     @GetMapping("/signup")
     public String signup(Model model) {
         model.addAttribute("user", new User());
+        model.addAttribute("liffId", liffId); // ✅ signup.htmlへ渡す
         return "signup";
     }
 
-    // ======================
-    // 登録処理
-    // ======================
-    @PostMapping("/signup")  // ← ここを「/register」から「/signup」に統一
-    public String register(@ModelAttribute("user") User user, Model model) {
+    @PostMapping("/signup")
+    public String register(@ModelAttribute("user") User user,
+                           @RequestParam String lineUserId,
+                           Model model) {
         try {
-            // Service層でユーザー登録
+            // ✅ LINE連携必須（空なら弾く）
+            if (lineUserId == null || lineUserId.isBlank()) {
+                model.addAttribute("error", "LINE連携が必要です。LINE連携してから登録してください。");
+                model.addAttribute("liffId", liffId);
+                return "signup";
+            }
+
             userService.registerUser(
                 user.getUsername(),
                 user.getPassword(),
-                "CUSTOMER"
+                "CUSTOMER",
+                lineUserId
             );
 
             model.addAttribute("success", "アカウントを登録しました！");
-            return "login";  // 登録後にログイン画面へ
+            return "login";
         } catch (Exception e) {
-        	e.printStackTrace();
+            e.printStackTrace();
             model.addAttribute("error", "登録に失敗しました: " + e.getMessage());
+            model.addAttribute("liffId", liffId);
             return "signup";
         }
     }
