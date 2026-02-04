@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.racketmanager.model.RacketOrder;
 import com.example.racketmanager.repository.RacketOrderRepository;
 import com.example.racketmanager.repository.UserRepository;
+import com.example.racketmanager.service.LineMessagingService;
 
 @Controller
 @RequestMapping("/staff")
@@ -22,11 +23,15 @@ public class StaffController {
 
     private final RacketOrderRepository orderRepo;
     private final UserRepository userRepo;
+    private final LineMessagingService lineMessagingService;
 
-    public StaffController(RacketOrderRepository orderRepo, UserRepository userRepo) {
-        this.orderRepo = orderRepo;
-        this.userRepo = userRepo;
-    }
+    public StaffController(RacketOrderRepository orderRepo, UserRepository userRepo,
+            LineMessagingService lineMessagingService) {
+this.orderRepo = orderRepo;
+this.userRepo = userRepo;
+this.lineMessagingService = lineMessagingService;
+}
+
 
     // ======================== 依頼一覧 =============================
     @GetMapping("/orders")
@@ -203,12 +208,42 @@ public class StaffController {
     @PostMapping("/orders/{id}/status")
     public String updateStatus(@PathVariable Long id,
                                @RequestParam String status) {
+
         orderRepo.findById(id).ifPresent(o -> {
+            String before = o.getStatus();   // 変更前
             o.setStatus(status);
             orderRepo.save(o);
+
+            // ✅ 「完了になった瞬間」だけ送る（完了→完了で連打しない）
+            if (!"完了".equals(before) && "完了".equals(status)) {
+
+                // 顧客が紐付いている場合のみ通知（削除済み顧客などは飛ばす）
+                if (o.getCustomer() != null) {
+                    String lineUserId = o.getCustomer().getLineUserId();
+
+                    // LINE未連携なら送らない
+                    if (lineUserId != null && !lineUserId.isBlank()) {
+                        String msg =
+                            "🎾 張り上がりが完了しました！\n"
+                          + "依頼ID：" + o.getId() + "\n"
+                          + "ガット：" + safe(o.getStringType()) + "\n"
+                          + "テンション：" + safe(o.getTensionMain()) + "/" + safe(o.getTensionCross()) + "\n"
+                          + "受け取り予定日：" + safe(String.valueOf(o.getDueDate())) + "\n"
+                          + "ご来店お待ちしています！";
+
+                        lineMessagingService.pushText(lineUserId, msg);
+                    }
+                }
+            }
         });
+
         return "redirect:/staff/orders";
     }
+
+    private String safe(String s) {
+        return (s == null) ? "-" : s;
+    }
+
 
     // ======================== 削除 =============================
     @PostMapping("/orders/{id}/delete")
