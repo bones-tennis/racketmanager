@@ -257,6 +257,7 @@ button.link-btn:disabled{
 form .line-btn{
   width: 100%;
   max-width: 100%;
+  padding: 15px;
   box-sizing: border-box;
-  margin-top: 10px; /* 今の inline style の代わり */
+  margin-top: 16px;
 }
