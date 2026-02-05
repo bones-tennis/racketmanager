@@ -87,11 +87,12 @@ form label {
 }
 
 form input {
-  width: 100%;
+  width: 92%;
   padding: 12px;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 14px;
+  margin: 0 auto;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
@@ -134,11 +135,16 @@ form button {
   background-color: var(--main-blue);
   color: var(--white);
   border: none;
-  padding: 14px;
-  border-radius: 9999px; /* 丸みを強調 */
+
+  padding: 16px;              /* ← 16px に統一 */
+  border-radius: 9999px;
   font-size: 15px;
+  font-weight: 600;
+
   cursor: pointer;
   transition: background-color 0.3s, transform 0.2s ease;
+
+  width: 100%;                /* ← link-btn と揃える */
 }
 
 form button:hover {
@@ -149,28 +155,26 @@ form button:hover {
 form button:active {
   transform: scale(0.98);
 }
-.form-buttons {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  margin-top: 10px;
-}
-
 
 
 /* ---------- 新規アカウント作成ボタン ---------- */
 .link-btn {
-  display: inline-block;
+  display: block;             /* ← inline-block → block */
   background-color: var(--main-blue);
   color: var(--white);
-  padding: 16px;
+
+  padding: 16px;              /* ← 同じ */
   border-radius: 9999px;
   font-size: 15px;
+  font-weight: 600;
+
   text-decoration: none;
   text-align: center;
-  width: 350px;
-  max-width: 91%;
+
+  width: 100%;                /* ← 完全一致 */
+  max-width: 100%;            /* ← 制限解除 */
   margin-top: 15px;
+
   transition: background-color 0.3s, transform 0.2s ease;
 }
 
@@ -182,6 +186,7 @@ form button:active {
 .link-btn:active {
   transform: scale(0.98);
 }
+
 
 /* ---------- メッセージ ---------- */
 .error-msg {
