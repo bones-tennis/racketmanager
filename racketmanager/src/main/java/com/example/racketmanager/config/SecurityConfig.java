@@ -22,12 +22,22 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/signup", "/register", "/css/**", "/images/**", "/js/**").permitAll()
-                .requestMatchers("/staff/**").hasRole("STAFF")
-                .requestMatchers("/customer/**").hasRole("CUSTOMER")
-                .anyRequest().authenticated()
-            )
+        .authorizeHttpRequests(auth -> auth
+        	    // ✅ 未ログインでもOKなページ
+        	    .requestMatchers(
+        	        "/", "/login",
+        	        "/signup", "/register",
+        	        "/liff", "/liff/**",
+        	        "/css/**", "/images/**", "/js/**"
+        	    ).permitAll()
+
+        	    // ✅ 権限
+        	    .requestMatchers("/staff/**").hasRole("STAFF")
+        	    .requestMatchers("/customer/**").hasRole("CUSTOMER")
+
+        	    .anyRequest().authenticated()
+        	)
+
             .formLogin(form -> form
                 .loginPage("/login")
                 .defaultSuccessUrl("/home", true)

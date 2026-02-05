@@ -21,11 +21,12 @@ public class AuthController {
     }
 
     @GetMapping("/signup")
-    public String signup(Model model) {
+    public String signup(Model model){
         model.addAttribute("user", new User());
-        model.addAttribute("liffId", liffId); // ✅ signup.htmlへ渡す
+        model.addAttribute("liffId", "2009047193-TnS19M6D");
         return "signup";
     }
+
 
     @PostMapping("/signup")
     public String register(@ModelAttribute("user") User user,
