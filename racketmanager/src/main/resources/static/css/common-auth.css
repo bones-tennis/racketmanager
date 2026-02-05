@@ -172,7 +172,7 @@ form button:active {
   text-decoration: none;
   text-align: center;
 
-  width: 80%;                /* ← 完全一致 */
+  width: 90%;                /* ← 完全一致 */
   max-width: 100%;            /* ← 制限解除 */
   margin-top: 15px;
 
