@@ -24,12 +24,7 @@ public class SecurityConfig {
         http
         .authorizeHttpRequests(auth -> auth
         	    // ✅ 未ログインでもOKなページ
-        	    .requestMatchers(
-        	        "/", "/login",
-        	        "/signup", "/register",
-        	        "/liff", "/liff/**",
-        	        "/css/**", "/images/**", "/js/**"
-        	    ).permitAll()
+        		.requestMatchers("/liff", "/liff/**", "/signup", "/login", "/css/**", "/images/**", "/js/**").permitAll()
 
         	    // ✅ 権限
         	    .requestMatchers("/staff/**").hasRole("STAFF")

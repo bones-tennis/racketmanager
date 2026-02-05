@@ -16,4 +16,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     // 🔹 ROLEで絞り込み（顧客・スタッフのリスト表示用）
     List<User> findByRole(String role);
+    Optional<User> findByLineUserId(String lineUserId);
+
 }

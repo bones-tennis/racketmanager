@@ -13,30 +13,24 @@ public class AuthController {
 
     private final UserService userService;
 
-    @Value("${line.liff-id:}")
-    private String liffId;
-
     public AuthController(UserService userService) {
         this.userService = userService;
     }
 
     @GetMapping("/signup")
-    public String signup(Model model){
-        model.addAttribute("user", new User());
-        model.addAttribute("liffId", "2009047193-TnS19M6D");
+    public String signup(@RequestParam(required = false) String lineUserId, Model model) {
+        User user = new User();
+        user.setLineUserId(lineUserId); // ✅ hiddenに入れる用
+        model.addAttribute("user", user);
         return "signup";
     }
 
-
     @PostMapping("/signup")
-    public String register(@ModelAttribute("user") User user,
-                           @RequestParam String lineUserId,
-                           Model model) {
+    public String register(@ModelAttribute("user") User user, Model model) {
         try {
-            // ✅ LINE連携必須（空なら弾く）
-            if (lineUserId == null || lineUserId.isBlank()) {
-                model.addAttribute("error", "LINE連携が必要です。LINE連携してから登録してください。");
-                model.addAttribute("liffId", liffId);
+            // ✅ lineUserId が無い登録は弾く（LIFF経由の初回登録前提なら）
+            if (user.getLineUserId() == null || user.getLineUserId().isBlank()) {
+                model.addAttribute("error", "LINE連携が確認できません。公式LINEから開いてください。");
                 return "signup";
             }
 
@@ -44,7 +38,7 @@ public class AuthController {
                 user.getUsername(),
                 user.getPassword(),
                 "CUSTOMER",
-                lineUserId
+                user.getLineUserId()
             );
 
             model.addAttribute("success", "アカウントを登録しました！");
@@ -52,8 +46,8 @@ public class AuthController {
         } catch (Exception e) {
             e.printStackTrace();
             model.addAttribute("error", "登録に失敗しました: " + e.getMessage());
-            model.addAttribute("liffId", liffId);
             return "signup";
         }
     }
 }
+
