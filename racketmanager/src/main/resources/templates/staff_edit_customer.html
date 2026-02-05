@@ -14,10 +14,6 @@
 
 <form th:action="@{|/staff/customers/${customer.id}/update|}" method="post" class="edit-form">
   <div>
-    <label>表示名</label>
-    <input type="text" name="displayName" th:value="${customer.displayName}" required>
-  </div>
-  <div>
     <label>ユーザー名</label>
     <input type="text" name="username" th:value="${customer.usernameDecrypted}" required>
   </div>
