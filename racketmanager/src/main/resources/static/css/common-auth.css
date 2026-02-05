@@ -144,7 +144,8 @@ form button {
   cursor: pointer;
   transition: background-color 0.3s, transform 0.2s ease;
 
-  width: 100%;                /* ← link-btn と揃える */
+  width: 100%;
+  margin-top: 15px;                /* ← link-btn と揃える */
 }
 
 form button:hover {
@@ -171,7 +172,7 @@ form button:active {
   text-decoration: none;
   text-align: center;
 
-  width: 100%;                /* ← 完全一致 */
+  width: 80%;                /* ← 完全一致 */
   max-width: 100%;            /* ← 制限解除 */
   margin-top: 15px;
 
