@@ -204,7 +204,7 @@ this.lineMessagingService = lineMessagingService;
         return "redirect:/staff/orders";
     }
 
-    // ======================== ステータス変更 =============================
+ // ======================== ステータス変更 =============================
     @PostMapping("/orders/{id}/status")
     public String updateStatus(@PathVariable Long id,
                                @RequestParam String status) {
@@ -223,12 +223,19 @@ this.lineMessagingService = lineMessagingService;
 
                     // LINE未連携なら送らない
                     if (lineUserId != null && !lineUserId.isBlank()) {
+
+                        String customerDisplay = (o.getCustomer() != null && o.getCustomer().getDisplayName() != null)
+                                ? o.getCustomer().getDisplayName()
+                                : safe(o.getCustomerName());
+
                         String msg =
-                            "🎾 張り上がりが完了しました！\n"
-                          + "依頼ID：" + o.getId() + "\n"
+                            "【bones ガット張り】\n"
+                          + "🎾 張り上がりが完了しました！\n\n"
+                          + customerDisplay + "様" + "\n"
                           + "ガット：" + safe(o.getStringType()) + "\n"
+                          + "素材：" + safe(o.getStringMaterial()) + "\n"
                           + "テンション：" + safe(o.getTensionMain()) + "/" + safe(o.getTensionCross()) + "\n"
-                          + "受け取り予定日：" + safe(String.valueOf(o.getDueDate())) + "\n"
+                          + "金額：" + safePrice(o.getPrice()) + "\n"
                           + "ご来店お待ちしています！";
 
                         lineMessagingService.pushText(lineUserId, msg);
@@ -240,9 +247,19 @@ this.lineMessagingService = lineMessagingService;
         return "redirect:/staff/orders";
     }
 
+    // ---------- helper ----------
     private String safe(String s) {
-        return (s == null) ? "-" : s;
+        return (s == null || s.isBlank()) ? "-" : s;
     }
+
+    private String safeDate(LocalDate d) {
+        return (d == null) ? "-" : d.toString();
+    }
+
+    private String safePrice(Integer p) {
+        return (p == null) ? "-" : (p + "円");
+    }
+
 
 
     // ======================== 削除 =============================
