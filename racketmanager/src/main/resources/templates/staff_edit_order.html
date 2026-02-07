@@ -11,7 +11,7 @@
 	<div th:replace="side_menu :: sideMenu"></div>
   <h2>依頼編集</h2>
 
-  <form th:action="@{|/staff/orders/${order.id}/update|}" method="post">
+  <form class="order-form" th:action="@{|/staff/orders/${order.id}/update|}" method="post">
     <label>顧客名</label>
     <div class="search-wrapper">
       <!-- ✅ 顧客が削除されていても customerName を表示する -->
