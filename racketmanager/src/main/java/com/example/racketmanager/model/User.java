@@ -2,6 +2,7 @@ package com.example.racketmanager.model;
 
 import com.example.racketmanager.security.EncryptionUtil;
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
@@ -11,28 +12,32 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 🔐 暗号化してDB保存（username）
     @Column(nullable = false, unique = true)
     private String username;
 
-    // 🔐 ハッシュ化してDB保存（password）
     @Column(nullable = false)
     private String password;
 
     @Column(nullable = false)
     private String role;
 
-    // 🪪 表示用の名前（平文）
     @Column(nullable = false)
     private String displayName;
 
-    // local or google
     @Column(nullable = false)
     private String provider;
 
-    // ✅ LINEのユーザーID（紐付け用）
     @Column(name = "line_user_id", unique = true)
     private String lineUserId;
+
+    // ===== アカウントロック管理 =====
+    @Column(nullable = false)
+    private boolean accountNonLocked = true;
+
+    @Column(nullable = false)
+    private int failedAttempts = 0;
+
+    private LocalDateTime lockTime;
 
     public User() {}
 
@@ -63,6 +68,31 @@ public class User {
 
     public String getLineUserId() { return lineUserId; }
     public void setLineUserId(String lineUserId) { this.lineUserId = lineUserId; }
+
+    // ===== ロック関連 Getter/Setter =====
+    public boolean isAccountNonLocked() {
+        return accountNonLocked;
+    }
+
+    public void setAccountNonLocked(boolean accountNonLocked) {
+        this.accountNonLocked = accountNonLocked;
+    }
+
+    public int getFailedAttempts() {
+        return failedAttempts;
+    }
+
+    public void setFailedAttempts(int failedAttempts) {
+        this.failedAttempts = failedAttempts;
+    }
+
+    public LocalDateTime getLockTime() {
+        return lockTime;
+    }
+
+    public void setLockTime(LocalDateTime lockTime) {
+        this.lockTime = lockTime;
+    }
 
     @Transient
     public String getUsernameDecrypted() {

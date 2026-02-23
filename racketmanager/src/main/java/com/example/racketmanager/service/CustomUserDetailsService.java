@@ -27,9 +27,12 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("ユーザーが見つかりません: " + inputUsername));
 
         return org.springframework.security.core.userdetails.User
-                .withUsername(inputUsername)  // 表示用は平文
-                .password(user.getPassword())
-                .roles(user.getRole().replace("ROLE_", "")) // ROLE_を除去して付与
-                .build();
+        	    .withUsername(inputUsername)
+        	    .password(user.getPassword())
+        	    .roles(user.getRole().replace("ROLE_", ""))
+        	    .accountLocked(!user.isAccountNonLocked())
+        	    .build();
+
+
     }
 }
