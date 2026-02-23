@@ -32,28 +32,28 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/signup", "/login", "/css/**", "/images/**", "/js/**", "/liff/**").permitAll()
+                .requestMatchers("/signup", "/login", "/css/**", "/images/**", "/js/**", "/liff/**", "/error").permitAll()
                 .requestMatchers("/staff/**").hasRole("STAFF")
                 .requestMatchers("/customer/**").hasRole("CUSTOMER")
                 .anyRequest().authenticated()
             )
             .sessionManagement(sm -> sm
-                .sessionFixation(sf -> sf.migrateSession()) // セッション固定化対策
+                .sessionFixation(sf -> sf.migrateSession())
             )
-            .authenticationProvider(authenticationProvider()) // ★ DaoAuthenticationProvider を適用
             .formLogin(form -> form
-                .loginPage("/login")
-                .successHandler(successHandler)  // ★成功時（失敗回数リセット）
-                .failureHandler(failureHandler)  // ★失敗時（カウント増＆ロック）
-                .defaultSuccessUrl("/home", true)
-                .permitAll()
-            )
-            .logout(logout -> logout
-                .logoutSuccessUrl("/login?logout")
-                .permitAll()
-            )
-            // CSRFは「有効」がデフォルト。明示するならこう書く（無効化しない）
-            .csrf(Customizer.withDefaults());
+            	    .loginPage("/login")
+            	    .loginProcessingUrl("/login")
+            	    .successHandler(successHandler)
+            	    .failureHandler(failureHandler)
+            	    .permitAll()
+            	)
+            	.logout(logout -> logout
+            	    .logoutUrl("/logout")
+            	    .logoutSuccessUrl("/login?logout")
+            	    .permitAll()
+            	)
+            	.csrf(Customizer.withDefaults())
+            	.authenticationProvider(authenticationProvider());
 
         return http.build();
     }
@@ -66,7 +66,7 @@ public class SecurityConfig {
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(customUserDetailsService); // ★変数名注意
+        authProvider.setUserDetailsService(customUserDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
