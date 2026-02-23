@@ -12,6 +12,7 @@
   <h2>依頼編集</h2>
 
   <form class="order-form" th:action="@{|/staff/orders/${order.id}/update|}" method="post">
+	<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
     <label>顧客名</label>
     <div class="search-wrapper">
       <!-- ✅ 顧客が削除されていても customerName を表示する -->

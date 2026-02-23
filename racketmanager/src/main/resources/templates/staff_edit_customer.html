@@ -13,6 +13,7 @@
 <h2>顧客情報の編集</h2>
 
 <form th:action="@{|/staff/customers/${customer.id}/update|}" method="post" class="edit-form">
+	<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
   <div>
     <label>ユーザー名</label>
     <input type="text" name="username" th:value="${customer.usernameDecrypted}" required>

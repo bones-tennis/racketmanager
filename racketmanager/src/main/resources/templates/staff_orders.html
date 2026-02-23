@@ -111,6 +111,7 @@
 
         <td class="status-cell" th:attr="data-status=${o.status}">
           <form th:action="@{/staff/orders/{id}/status(id=${o.id})}" method="post" style="display:inline;">
+			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
             <div class="status-wrapper">
               <span class="status-dot"></span>
               <select name="status" onchange="this.form.submit()">
@@ -125,6 +126,7 @@
         <td>
           <a th:href="@{/staff/orders/{id}/edit(id=${o.id})}">編集</a>
           <form th:action="@{|/staff/orders/${o.id}/delete|}" method="post" style="display:inline" onsubmit="return confirm('削除しますか？')">
+			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
             <button type="submit" style="color:red;">削除</button>
           </form>
         </td>
